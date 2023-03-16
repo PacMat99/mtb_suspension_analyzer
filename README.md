@@ -18,7 +18,3 @@ The first tests will be done with esp32 and the final version will be made with 
 - 1 x SSD1306 OLED display (what size and format?)
 - 1 x micro sd storage expansion board
 - 2 x 18650 batteries in parallel
-
-## Intellisense info
-1. add these path to "C/C++ include path": `C:/Program Files (x86)/Arduino/**`, `C:/Users/pacch/Documents/Arduino/libraries/**`, `C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr`
-2. add `"USBCON"` in `Win32 -> defines`
