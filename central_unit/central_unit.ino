@@ -1,11 +1,10 @@
-#include <Arduino.h>
 #include "display.h"
 
 void setup() {
-	Serial.begin(9600);
-	setupDisplay();
+  Serial.begin(9600);
+  display_setup();
 }
 
 void loop() {
-	delay(1000);
+  display_loop();
 }
