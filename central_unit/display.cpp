@@ -22,29 +22,26 @@ void display_setup(void) {
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setCursor(0, 12);
-  display.println("Welcome!");
+  display.println("Welcome :)");
   display.display();
+  delay(2000);
+  display.clearDisplay();
+  display.println("Have a good ride!");
+  display.display();
+  display.startscrollright(0x00, 0x0F);
+  //delay(3000);
+  //display.stopscroll();
   delay(100);
 }
 
 void display_loop(void) {
-  display.startscrollright(0x00, 0x0F);
+  //display.startscrollright(0x00, 0x0F);
  
-  delay(2000);
+  //delay(2000);
   
-  display.stopscroll();
-  delay(1000);
-  display.startscrollleft(0x00, 0x0F);
+  //display.stopscroll();
+  //delay(1000);
+  //display.startscrollleft(0x00, 0x0F);
 
-  delay(2000);
-  display.stopscroll();
-  delay(1000);
-  display.startscrolldiagright(0x00, 0x07);
- 
-  delay(2000);
-  display.startscrolldiagleft(0x00, 0x07);
-
-  delay(2000);
-  display.stopscroll();
-  delay(1000);
+  //display.stopscroll();
 }

@@ -2,24 +2,26 @@
 
 Adafruit_ADS1115 ads;
 
+#define BUTTON_PIN 5
+
 void joystick_setup(void) {
   if (!ads.begin()) {
     delay(5000);
     Serial.println("Failed to initialize ADS.");
   }
+
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
 }
 
 void joystick_loop(void) {
-  int16_t adc0, adc1, adc2, adc3;
+  int16_t x_pin, y_pin, button_pin;
 
-  adc0 = ads.readADC_SingleEnded(0);
-  adc1 = ads.readADC_SingleEnded(1);
-  adc2 = ads.readADC_SingleEnded(2);
-  adc3 = ads.readADC_SingleEnded(3);
+  x_pin = ads.readADC_SingleEnded(0);
+  y_pin = ads.readADC_SingleEnded(1);
+  button_pin = !digitalRead(BUTTON_PIN);
 
   Serial.println("-----------------------------------------------------------");
-  Serial.print("AIN0: "); Serial.print(adc0);// Serial.print("  "); Serial.print(volts0); Serial.println("V");
-  Serial.print("AIN1: "); Serial.print(adc1);// Serial.print("  "); Serial.print(volts1); Serial.println("V");
-  Serial.print("AIN2: "); Serial.print(adc2);// Serial.print("  "); Serial.print(volts2); Serial.println("V");
-  Serial.print("AIN3: "); Serial.print(adc3);// Serial.print("  "); Serial.print(volts3); Serial.println("V");
+  Serial.print("x_pin: "); Serial.println(x_pin);
+  Serial.print("y_pin: "); Serial.println(y_pin);
+  Serial.print("button_pin: "); Serial.println(button_pin);
 }
