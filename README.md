@@ -12,9 +12,10 @@ The first tests will be done with esp32 and the final version will be made with 
 
 ## Used Hardware
 
-- 1 x ESP8266
-- 2 x IMU / MPU (what model?)
+- 2 x ESP8266
+- 2 x LSM6DSOX
 - 1 x TOF200C-VL53L0X
-- 1 x SSD1306 OLED display (what size and format?)
+- 1 x SSD1306 OLED display (0.91", (128x32)px)
 - 1 x micro sd storage expansion board
-- 2 x 18650 batteries in parallel
+- 2 x 18650 batteries in parallel (main board)
+- 1 x 18650 battery (secondary board)
