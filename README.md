@@ -4,11 +4,18 @@
 
 This is a prototype of a suspension analyzer system.
 
-The prototype will be initially developed for a hardtail mtb, maybe a prototype for full suspended mtb will developed in the future with the help of some friends that own a full suspended mtb.
+The prototype will be initially developed for a hardtail mtb. A prototype for full suspended mtb will probably be developed in the future with the help of some friends that own a full suspended mtb.
 
-I will use micrpython as programming language since it is supposed to be easier and faster to implement than Arduino language. 
+I will mainly code in Arduino language. 
 
-The first tests will be done with esp32 and the final version will be made with UDoo, which implements an esp3 and a raspberry pico cpu.
+At the moment the prototype will be developed using ESP8266 as MCU.
+
+## Dev stages
+
+1. Develop code and circuit diagram for the first version of the project: an easy Arduino data collector
+2. Understand how to elaborate collected data
+3. Write UML and LaTeX documentation for a more advanced version of the project
+4. Continue...
 
 ## Used Hardware
 
