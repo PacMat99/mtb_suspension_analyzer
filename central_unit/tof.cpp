@@ -1,26 +1,28 @@
 #include <Arduino.h>
-#include "Adafruit_VL53L0X.h"
+#include <Wire.h>
+#include <VL53L0X.h>
 
-Adafruit_VL53L0X tof = Adafruit_VL53L0X();
+VL53L0X sensor;
 
-void tof_setup(void) {
-  if (!tof.begin()) {
-    Serial.println("Failed to boot VL53L0X");
-    delay(5000);
+void tof_setup() {
+  Wire.begin();
+
+  sensor.setTimeout(500);
+  while (!sensor.init()) {
+    Serial.println("Failed to detect and initialize sensor!");
   }
+
+  // Start continuous back-to-back mode (take readings as
+  // fast as possible).  To use continuous timed mode
+  // instead, provide a desired inter-measurement period in
+  // ms (e.g. sensor.startContinuous(100)).
+  sensor.startContinuous(100);
 }
 
-void tof_loop(void) {
-  VL53L0X_RangingMeasurementData_t measure;
-
-  Serial.print("Reading a measurement... ");
-  tof.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
-
-  if (measure.RangeStatus != 4) {
-    // phase failures have incorrect data
-    Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
-  }
-  else {
-    Serial.println(" out of range ");
+void tof_loop() {
+  int travel = sensor.readRangeContinuousMillimeters();
+  //Serial.println(travel);
+  if (sensor.timeoutOccurred()) {
+    Serial.println(" TIMEOUT");
   }
 }

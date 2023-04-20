@@ -17,9 +17,9 @@ int start;
 
 void display_setup(void) {
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+  while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println("Failed to boot SSD1306");
-    delay(5000);
+    delay(1000);
   }
 
   //display.setFont(&FreeMono9pt7b);
@@ -55,8 +55,17 @@ void display_loop(void) {
       display.display();
     }
     delay(1000);
+    Serial.print("millis = ");
+    Serial.println(millis());
+    Serial.print("millis-start = ");
+    Serial.println(millis() - start);
   }
   else {
     display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.print("Happy riding");
+    display.display();
   }
 }
