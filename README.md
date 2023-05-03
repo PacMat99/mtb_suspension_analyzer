@@ -10,6 +10,8 @@ I will mainly code in Arduino language.
 
 At the moment the prototype will be developed using ESP8266 as MCU.
 
+Probably one of the next step will be to add a LSM6DSOX sensor in crankset zone
+
 ## Dev stages
 
 1. Develop code and circuit diagram for the first version of the project: an easy Arduino data collector
