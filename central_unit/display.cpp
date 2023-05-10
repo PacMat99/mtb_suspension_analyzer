@@ -41,7 +41,7 @@ void display_setup(void) {
   start = millis();
 }
 
-void display_loop(void) {
+void display_loop(bool recording) {
   if (millis() - start <= 10000) {
     display.clearDisplay();
     display.setTextSize(2);
@@ -54,6 +54,9 @@ void display_loop(void) {
       display.print(".");
       display.display();
     }
+    display.startscrollright(0x00, 0x0F);
+    delay(2000);
+    display.stopscroll();
     delay(1000);
     Serial.print("millis = ");
     Serial.println(millis());

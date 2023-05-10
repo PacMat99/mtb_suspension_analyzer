@@ -12,11 +12,11 @@ void setup() {
 }
 
 void loop() {
-  display_loop();
-  controller_loop();
-  tof_loop();
-  imu_loop();
-  delay(100);
+  bool recording = controller_loop();
+  bool error = false;
+  if (!tof_loop() || !imu_loop())
+    error = true;
+  display_loop(recording, error);
 }
 
 /* ESP8266 PINOUT

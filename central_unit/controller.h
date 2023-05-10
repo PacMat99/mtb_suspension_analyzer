@@ -1,2 +1,2 @@
 void controller_setup(void);
-void controller_loop(void);
+bool controller_loop(void);

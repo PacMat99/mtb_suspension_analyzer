@@ -4,12 +4,12 @@
 
 VL53L0X sensor;
 
-void tof_setup() {
+bool tof_setup() {
   Wire.begin();
 
-  sensor.setTimeout(500);
+  sensor.setTimeout(0);
   while (!sensor.init()) {
-    Serial.println("Failed to detect and initialize sensor!");
+    Serial.println("TOF error");
   }
 
   // Start continuous back-to-back mode (take readings as
@@ -17,12 +17,18 @@ void tof_setup() {
   // instead, provide a desired inter-measurement period in
   // ms (e.g. sensor.startContinuous(100)).
   sensor.startContinuous(100);
+  
+  return true;
 }
 
-void tof_loop() {
+bool tof_loop() {
   int travel = sensor.readRangeContinuousMillimeters();
-  //Serial.println(travel);
+  Serial.print("Fork travel: ");
+  Serial.println(travel);
   if (sensor.timeoutOccurred()) {
-    Serial.println(" TIMEOUT");
+    Serial.println("TOF error");
+    return false;
   }
+
+  return true;
 }

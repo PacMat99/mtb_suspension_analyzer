@@ -1,2 +1,2 @@
 void display_setup(void);
-void display_loop(void);
+void display_loop(bool recording);
