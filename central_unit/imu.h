@@ -1,2 +1,2 @@
 void imu_setup();
-void imu_loop();
+bool imu_loop();

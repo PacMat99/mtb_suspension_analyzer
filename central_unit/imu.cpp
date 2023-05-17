@@ -8,8 +8,8 @@ void imu_setup(void) {
 
   Serial.println("Adafruit LSM6DSOX test!");
 
-  while (!sox.begin_I2C()) {
-    Serial.println("LSM6DSOX Found!");
+  if (!sox.begin_I2C()) {
+    Serial.println("LSM6DSOX error");
     delay(1000);
   }
 
@@ -129,7 +129,7 @@ void imu_setup(void) {
   }
 }
 
-void imu_loop() {
+bool imu_loop() {
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -176,4 +176,6 @@ void imu_loop() {
   // Serial.print(","); Serial.print(gyro.gyro.z);
   // Serial.println();
   //  delayMicroseconds(10000);
+
+  return true;
 }

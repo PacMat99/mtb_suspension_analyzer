@@ -13,8 +13,6 @@
 #define SCREEN_ADDRESS 0x3C // Address 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-int start;
-
 void display_setup(void) {
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -22,53 +20,23 @@ void display_setup(void) {
     delay(1000);
   }
 
-  //display.setFont(&FreeMono9pt7b);
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.print("Welcome!");
+  display.setCursor(0, 12);
+  display.print("Booting...");
   display.display();
   delay(2000);
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.print("Have a good ride :)");
-  display.display();
-  delay(2000);
-
-  start = millis();
 }
 
-void display_loop(bool recording) {
-  if (millis() - start <= 10000) {
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0, 0);
-    display.print("Select graph type");
-    display.display();
-    for (int8_t i = 0; i < 3; i++) {
-      delay(1000);
-      display.print(".");
-      display.display();
-    }
-    display.startscrollright(0x00, 0x0F);
-    delay(2000);
-    display.stopscroll();
-    delay(1000);
-    Serial.print("millis = ");
-    Serial.println(millis());
-    Serial.print("millis-start = ");
-    Serial.println(millis() - start);
-  }
-  else {
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0, 0);
-    display.print("Happy riding");
-    display.display();
-  }
+void display_loop(bool recording, bool error) {
+  display.clearDisplay();
+  display.setCursor(0, 12);
+  if (error)
+    display.print("ERROR! :(");
+  else if (recording)
+    display.print("Recording");
+  else
+    display.print("Waiting");
+  display.display();
 }
