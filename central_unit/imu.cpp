@@ -5,9 +5,6 @@
 
 Adafruit_LSM6DSOX sox;
 void imu_setup(void) {
-
-  Serial.println("Adafruit LSM6DSOX test!");
-
   if (!sox.begin_I2C()) {
     Serial.println("LSM6DSOX error");
     delay(1000);
