@@ -8,9 +8,9 @@ void tof_setup() {
   Wire.begin();
 
   sensor.setTimeout(0);
-  if (!sensor.init()) {
+  while (!sensor.init()) {
     Serial.println("TOF error");
-    delay(1000);
+    delay(500);
   }
 
   // Start continuous back-to-back mode (take readings as

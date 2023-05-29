@@ -5,9 +5,9 @@
 
 Adafruit_LSM6DSOX sox;
 void imu_setup(void) {
-  if (!sox.begin_I2C()) {
+  while (!sox.begin_I2C()) {
     Serial.println("LSM6DSOX error");
-    delay(1000);
+    delay(500);
   }
 
   // sox.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
