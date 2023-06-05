@@ -8,14 +8,14 @@ void setup() {
   Serial.begin(115200);
   display_setup();
   bluetooth_setup();
-  //controller_setup();
+  controller_setup();
   tof_setup();
   imu_setup();
 }
 
 void loop() {
-  //bool recording = controller_loop();
-  bool recording = true;
+  bool recording = controller_loop();
+  //bool recording = true;
   bool error = false;
   if (!tof_loop() || !imu_loop())
     error = true;
