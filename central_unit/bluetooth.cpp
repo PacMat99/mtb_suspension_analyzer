@@ -48,6 +48,9 @@ void bluetooth_loop() {
     led_2 = true;
   }
 
+  bt.println("Evviva, andiamo a fare un giro");
+  bt.println("Ma se scrivo 5 viene letto correttamente?");
+
   if (led_1)
     digitalWrite(LED_PIN_1, HIGH);
   else

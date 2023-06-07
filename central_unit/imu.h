@@ -1,2 +1,2 @@
-void imu_setup();
-bool imu_loop();
+void imu_setup(void);
+bool imu_loop(bool recording);

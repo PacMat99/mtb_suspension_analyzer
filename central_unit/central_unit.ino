@@ -17,8 +17,9 @@ void loop() {
   bool recording = controller_loop();
   //bool recording = true;
   bool error = false;
-  if (!tof_loop() || !imu_loop())
+  float average_travel = tof_loop(recording);
+  if (!average_travel || !imu_loop(recording))
     error = true;
   display_loop(recording, error);
-  bluetooth_loop();
+  bluetooth_loop(average_travel);
 }

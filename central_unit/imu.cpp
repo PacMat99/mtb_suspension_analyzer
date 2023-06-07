@@ -3,6 +3,12 @@
 #include <Arduino.h>
 #include <Adafruit_LSM6DSOX.h>
 
+typedef struct {
+	char cognome[30];
+	char nome[20];
+	int voto;
+} imu;
+
 Adafruit_LSM6DSOX sox;
 void imu_setup(void) {
   while (!sox.begin_I2C()) {
@@ -126,7 +132,7 @@ void imu_setup(void) {
   }
 }
 
-bool imu_loop() {
+bool imu_loop(bool recording) {
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -158,21 +164,21 @@ bool imu_loop() {
 
   delay(100);
 
-  //  // serial plotter friendly format
+  // serial plotter friendly format
 
-  //  Serial.print(temp.temperature);
-  //  Serial.print(",");
+  Serial.print(temp.temperature);
+  Serial.print(",");
 
-  //  Serial.print(accel.acceleration.x);
-  //  Serial.print(","); Serial.print(accel.acceleration.y);
-  //  Serial.print(","); Serial.print(accel.acceleration.z);
-  //  Serial.print(",");
+  Serial.print(accel.acceleration.x);
+  Serial.print(","); Serial.print(accel.acceleration.y);
+  Serial.print(","); Serial.print(accel.acceleration.z);
+  Serial.print(",");
 
-  // Serial.print(gyro.gyro.x);
-  // Serial.print(","); Serial.print(gyro.gyro.y);
-  // Serial.print(","); Serial.print(gyro.gyro.z);
-  // Serial.println();
-  //  delayMicroseconds(10000);
+  Serial.print(gyro.gyro.x);
+  Serial.print(","); Serial.print(gyro.gyro.y);
+  Serial.print(","); Serial.print(gyro.gyro.z);
+  Serial.println();
+  delayMicroseconds(10000);
 
   return true;
 }

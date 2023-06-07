@@ -4,6 +4,9 @@
 
 VL53L0X sensor;
 
+int n = 0;
+int tot = 0;
+
 void tof_setup() {
   Wire.begin();
 
@@ -20,14 +23,18 @@ void tof_setup() {
   sensor.startContinuous(100);
 }
 
-bool tof_loop() {
+float tof_loop(bool recording) {
+  if (!recording) {
+    n = 0;
+    tot = 0;
+  }
   int travel = sensor.readRangeContinuousMillimeters();
   Serial.print("Fork travel: ");
   Serial.println(travel);
   if (sensor.timeoutOccurred() || travel >= 8190) {
     Serial.println("TOF error");
-    return false;
+    return 0;
   }
 
-  return true;
+  return travel;
 }
