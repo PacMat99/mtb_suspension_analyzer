@@ -1,3 +1,5 @@
+#include "pico/stdlib.h"
+
 #include "display.h"
 #include "bluetooth.h"
 #include "controller.h"
