@@ -26,16 +26,13 @@ echo 'export PATH="/home/pacmat/pico/pico-sdk:$PATH"' >> ~/.profile
 
 echo "create pico aliases (TO BE MODIFIED based on your environment)"
 read -p "Are you using .bashrc? Otherwise its supposed you're using .zshrc. (Y/n)" answer
-
-if [[ $answer -eq "y" || $answer -eq "Y" ]]; then
-echo 'alias set_path="export PICO_SDK_PATH=/home/* your user */pico/pico-sdk"' >> .bashrc
-echo 'alias upload_pico="cp /home/* your_path */mtb_suspension_analyzer/build/main.uf2 /media/* your user */RPI-RP2"' >> .bashrc
-
-elif [[ $answer -eq "n" || $answer -eq "N" ]]; then
-echo 'alias set_path="export PICO_SDK_PATH=/home/* your user */pico/pico-sdk"' >> .zshrc
-echo 'alias upload_pico="cp /home/* your_path */mtb_suspension_analyzer/build/main.uf2 /media/* your user */RPI-RP2"' >> .zshrc
-
+bash_file=.bashrc
+if [[ $answer -eq "n" || $answer -eq "N" ]]; then
+    bash_file=.zshrc
 fi
+echo 'alias set_path="export PICO_SDK_PATH=/home/* your user */pico/pico-sdk"' >> $bash_file
+echo 'alias upload_pico="cp /home/* your_path */mtb_suspension_analyzer/build/main.uf2 /media/* your user */RPI-RP2"' >> $bash_file
+echo 'alias open_serial_monitor="sudo minicom -b 115200 -o -D /dev/ttyACM0"' >> $bash_file
 
 echo "Install minicom for serial monitor"
 sudo apt install minicom
