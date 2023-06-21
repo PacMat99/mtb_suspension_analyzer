@@ -21,9 +21,9 @@ Probably one of the next step will be to add a LSM6DSOX sensor in crankset zone
 
 ## Used Hardware
 
-- 1 x ESP8266
+- 1 x Raspberry Pi Pico
 - 2 x LSM6DSOX
 - 1 x TOF200C-VL53L0X
 - 1 (maybe 2) x SSD1306 OLED display (0.91", (128x32)px)
 - 1 x micro sd storage expansion board
-- 2 x 18650 batteries in parallel
+- 2 x 18650 batteries in series
