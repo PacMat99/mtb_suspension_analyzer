@@ -14,7 +14,7 @@ git clone https://github.com/raspberrypi/pico-examples.git --branch master
 
 echo "Install the toolchain"
 sudo apt update
-sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential
+sudo apt install cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential -y
 
 echo "Update the SDK"
 cd pico-sdk
@@ -35,6 +35,6 @@ echo 'alias upload_pico="cp /home/* your_path */mtb_suspension_analyzer/build/ma
 echo 'alias open_serial_monitor="sudo minicom -b 115200 -o -D /dev/ttyACM0"' >> $bash_file
 
 echo "Install minicom for serial monitor"
-sudo apt install minicom
+sudo apt install minicom -y
 
 echo "Done! :D"
