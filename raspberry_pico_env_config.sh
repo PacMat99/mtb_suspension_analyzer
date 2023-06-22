@@ -25,7 +25,7 @@ echo "Export sdk path to .profile"
 echo 'export PATH="/home/pacmat/pico/pico-sdk:$PATH"' >> ~/.profile
 
 echo "create pico aliases (TO BE MODIFIED based on your environment)"
-read -p "Are you using .bashrc? Otherwise its supposed you're using .zshrc. (Y/n)" answer
+read -p "Are you using .bashrc? Otherwise it's supposed you're using .zshrc. (Y/n)" answer
 bash_file=.bashrc
 if [[ $answer -eq "n" || $answer -eq "N" ]]; then
     bash_file=.zshrc
@@ -38,3 +38,4 @@ echo "Install minicom for serial monitor"
 sudo apt install minicom -y
 
 echo "Done! :D"
+echo "IMPORTANT: you should update the aliases with your path and your user"
