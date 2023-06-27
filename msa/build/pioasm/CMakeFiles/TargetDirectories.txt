@@ -1,0 +1,3 @@
+/home/pacmat/pico/mtb_suspension_analyzer/msa/build/pioasm/CMakeFiles/pioasm.dir
+/home/pacmat/pico/mtb_suspension_analyzer/msa/build/pioasm/CMakeFiles/edit_cache.dir
+/home/pacmat/pico/mtb_suspension_analyzer/msa/build/pioasm/CMakeFiles/rebuild_cache.dir
