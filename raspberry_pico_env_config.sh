@@ -12,6 +12,10 @@ git submodule update --init
 cd ..
 git clone https://github.com/raspberrypi/pico-examples.git --branch master
 git clone https://github.com/raspberrypi/pico-project-generator.git --branch master
+git clone https://github.com/fhdm-dev/pico-arduino-compat.git
+cd pico-arduino-compat
+git submodule update --init arduino-compat/arduino-pico
+cd ..
 
 echo "Install the toolchain"
 sudo apt update
