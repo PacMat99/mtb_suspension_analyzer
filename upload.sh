@@ -1,0 +1,1 @@
+cp /home/pacmat/pico/mtb_suspension_analyzer/build/main.uf2 /media/pacmat/RPI-RP2
