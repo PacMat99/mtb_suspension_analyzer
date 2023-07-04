@@ -1,15 +1,17 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#define BT_TX_PIN 12
-#define BT_RX_PIN 13
+#define BT_TX_PIN 0
+#define BT_RX_PIN 1
 
-#define LED_PIN_1 5
-#define LED_PIN_2 6
+#define LED_PIN_1 25
+#define LED_PIN_2 4
 
-SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
+//SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
 
-int state = 0;
+SerialPIO bt = SerialPIO(BT_TX_PIN, BT_RX_PIN);
+
+char state;
 
 bool led_1 = false;
 bool led_2 = false;
@@ -25,6 +27,9 @@ void bluetooth_setup() {
 void bluetooth_loop() {
   if (bt.available() > 0)
     state = bt.read();
+  Serial.print("state: ");
+  Serial.println(state);
+  Serial.println("Ciao ciaooo");
   
   if (state == 10) {
     Serial.println("LED 1: OFF");
@@ -61,6 +66,5 @@ void bluetooth_loop() {
   else
     digitalWrite(LED_PIN_2, LOW);
 
-  Serial.println("state: " + String(state));
   delay(500);
 }
