@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define CTRL_CONFIRM 20
+#define CTRL_CONFIRM 26
 #define BUZZER 27
 
 bool recording = false;
