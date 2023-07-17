@@ -1,6 +1,7 @@
-#include <sys/_stdint.h>
 #include <Arduino.h>
+#include <sys/_stdint.h>
 #include <SoftwareSerial.h>
+#include "imu.h"
 
 #define BT_TX_PIN 0
 #define BT_RX_PIN 1
@@ -15,7 +16,7 @@ SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
 int state = 0;
 int tmp;
 
-void bluetooth_setup() {
+void bluetooth_setup(void) {
   pinMode(BT_RX_PIN, INPUT);
   pinMode(BT_TX_PIN, OUTPUT);
   pinMode(INTEGRATED_LED_PIN, OUTPUT);
@@ -25,7 +26,7 @@ void bluetooth_setup() {
   bt.begin(9600);
 }
 
-void bluetooth_loop() {
+void bluetooth_loop(void) {
   digitalWrite(INTEGRATED_LED_PIN, HIGH);
 
   // if data on softwareSerial buffer, show them on serial monitor

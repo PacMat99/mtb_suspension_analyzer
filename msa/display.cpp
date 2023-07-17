@@ -1,10 +1,10 @@
 #include <Arduino.h>
-
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 //#include <Fonts/FreeMono9pt7b.h>
+#include "display.h"
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -26,6 +26,7 @@ void display_setup(void) {
   display.setCursor(0, 12);
   display.print("Booting...");
   display.display();
+  Serial.println("display setup finished");
   delay(2000);
 }
 
@@ -39,4 +40,9 @@ void display_loop(bool recording, bool error) {
   else
     display.print("Waiting");
   display.display();
+
+  //Serial.print("SDA: ");
+  //Serial.println(SDA);
+  //Serial.print("SCL: ");
+  //Serial.println(SCL);
 }

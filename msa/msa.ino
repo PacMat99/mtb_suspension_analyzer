@@ -15,10 +15,11 @@ void setup() {
 
 void loop() {
   bool recording = true;
-  imu_loop(recording);
+  imu_type imu = imu_loop(recording);
+  //imu_loop(recording);
   //uint8_t recording = controller_loop();
   //bool recording = true;
-  //bool error = false;
+  bool error = false;
   //float average_travel = tof_loop(recording);
   //if (!average_travel || !imu_loop(recording))
   //  error = true;
