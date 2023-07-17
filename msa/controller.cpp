@@ -1,17 +1,18 @@
+#include <sys/_stdint.h>
 #include <Arduino.h>
 
 #define CTRL_CONFIRM 26
 #define BUZZER 27
 
-bool recording = false;
+uint8_t recording = false;
 
 void controller_setup(void) {
   pinMode(BUZZER, OUTPUT);
   pinMode(CTRL_CONFIRM, INPUT_PULLUP);
 }
 
-bool controller_loop(void) {
-  int confirm = !digitalRead(CTRL_CONFIRM);
+uint8_t controller_loop(void) {
+  uint8_t confirm = !digitalRead(CTRL_CONFIRM);
   Serial.print("confirm: "); Serial.println(confirm);
   if (confirm) {
     recording = !recording;

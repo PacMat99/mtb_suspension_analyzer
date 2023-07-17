@@ -1,2 +1,2 @@
 void controller_setup(void);
-bool controller_loop(void);
+uint8_t controller_loop(void);
