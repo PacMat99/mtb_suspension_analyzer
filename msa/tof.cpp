@@ -32,6 +32,10 @@ float tof_loop(bool recording) {
   int travel = sensor.readRangeContinuousMillimeters();
   Serial.print("Fork travel: ");
   Serial.println(travel);
+  Serial.print("SDA: ");
+  Serial.println(SDA);
+  Serial.print("SCL: ");
+  Serial.println(SCL);
   if (sensor.timeoutOccurred() || travel >= 8190) {
     Serial.println("TOF error");
     return 0;

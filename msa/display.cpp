@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <SPI.h>
-#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Wire.h>
 //#include <Fonts/FreeMono9pt7b.h>
 #include "display.h"
 
@@ -14,6 +14,7 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void display_setup(void) {
+  Wire.begin();
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println("Failed to boot SSD1306");

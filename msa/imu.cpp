@@ -171,28 +171,10 @@ imu_type imu_loop(bool recording) {
   Serial.println(" radians/s ");
   Serial.println();
 
-  delay(100);
-
-  // serial plotter friendly format
-
-  //Serial.print(temp.temperature);
-  //Serial.print(",");
-
-  //Serial.print(accel.acceleration.x);
-  //Serial.print(","); Serial.print(accel.acceleration.y);
-  //Serial.print(","); Serial.print(accel.acceleration.z);
-  //Serial.print(",");
-
-  //Serial.print(gyro.gyro.x);
-  //Serial.print(","); Serial.print(gyro.gyro.y);
-  //Serial.print(","); Serial.print(gyro.gyro.z);
-  //Serial.println();
-  //delayMicroseconds(10000);
-
-  Serial.print("SDA: ");
-  Serial.println(SDA);
-  Serial.print("SCL: ");
-  Serial.println(SCL);
+  //Serial.print("SDA: ");
+  //Serial.println(SDA);
+  //Serial.print("SCL: ");
+  //Serial.println(SCL);
 
   imu.error = false;
 

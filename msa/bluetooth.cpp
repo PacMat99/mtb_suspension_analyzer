@@ -34,7 +34,6 @@ void bluetooth_loop(void) {
     tmp = bt.read();
     if (tmp != 10 && tmp != 13 && tmp != 255) {
       state = tmp;
-      delay(2000);
     }
 
     Serial.println("tmp: " + String(tmp));
@@ -55,5 +54,4 @@ void bluetooth_loop(void) {
   bt.println(state);
 
   digitalWrite(INTEGRATED_LED_PIN, LOW);
-  delay(500);
 }
