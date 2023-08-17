@@ -1,8 +1,8 @@
 #include <sys/_stdint.h>
 #include <Arduino.h>
 
-#define CTRL_CONFIRM 26
-#define BUZZER 27
+#define CTRL_CONFIRM 18
+#define BUZZER 19
 
 uint8_t recording = false;
 

@@ -8,6 +8,8 @@
 Adafruit_LSM6DSOX sox;
 
 imu_type imu;
+imu_type imu_fork;
+imu_type imu_frame;
 
 void imu_setup(void) {
   while (!sox.begin_I2C()) {
