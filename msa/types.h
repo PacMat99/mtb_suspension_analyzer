@@ -1,3 +1,9 @@
+struct travel_type {
+  int travel;
+  float average_travel;
+  int max_travel;
+};
+
 struct imu_type {
   char accel_range[20];
   char gyro_range[20];
@@ -12,6 +18,3 @@ struct imu_type {
   float gyro_z;
   bool error;
 };
-
-void imu_setup(void);
-imu_type imu_loop(bool recording);
