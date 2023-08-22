@@ -10,73 +10,28 @@
 #include "pins.h"
 
 bool recording = false;
+bool error = false;
 
 void setup() {
   Serial.begin(115200);
   Wire.begin();
   
-  bluetooth_setup();
+  controller_setup();
+  //imu_setup();
   display_setup();
-  imu_setup();
+  bluetooth_setup();
 }
 
 void loop() {
   Serial.print("SDA: "); Serial.println(SDA);
   Serial.print("SCL: "); Serial.println(SCL);
-  //imu_loop(recording);
-  bool error = false;
-  travel_type travel = travel_loop();
-  imu_type imu = imu_loop();
+  
+  controller_loop();
+  travel_loop();
+  //imu_loop();
   //display_loop();
-  display_loop(recording, error, travel);
   //bluetooth_loop();
   delay(10);
-}
-
-// -------------------- BLUETOOTH --------------------
-SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
-//SerialPIO bt = SerialPIO(BT_TX_PIN, BT_RX_PIN);
-int state = 0;
-int tmp;
-
-void bluetooth_setup() {
-  pinMode(BT_RX_PIN, INPUT);
-  pinMode(BT_TX_PIN, OUTPUT);
-  pinMode(INTEGRATED_LED_PIN, OUTPUT);
-  pinMode(EXTERNAL_LED_PIN, OUTPUT);
-  digitalWrite(INTEGRATED_LED_PIN, LOW);
-  digitalWrite(EXTERNAL_LED_PIN, LOW);
-  bt.begin(9600);
-}
-
-void bluetooth_loop(void) {
-  digitalWrite(INTEGRATED_LED_PIN, HIGH);
-
-  // if data on softwareSerial buffer, show them on serial monitor
-  while (bt.available() > 0) {
-    tmp = bt.read();
-    if (tmp != 10 && tmp != 13 && tmp != 255) {
-      state = tmp;
-    }
-
-    Serial.println("tmp: " + String(tmp));
-  }
-
-  if (state == 2) {
-    digitalWrite(EXTERNAL_LED_PIN, HIGH);
-    bt.println("EXTERNAL LED: ON");
-  }
-  else {
-    digitalWrite(EXTERNAL_LED_PIN, LOW);
-    bt.println("EXTERNAL LED: OFF");
-  }
-
-  Serial.print("state: ");
-  Serial.println(state);
-  bt.print("state: ");
-  bt.println(state);
-
-  digitalWrite(INTEGRATED_LED_PIN, LOW);
 }
 
 // -------------------- CONTROLLER --------------------
@@ -85,7 +40,7 @@ void controller_setup() {
   pinMode(CTRL_CONFIRM, INPUT_PULLUP);
 }
 
-bool controller_loop(void) {
+bool controller_loop() {
   bool confirm = !digitalRead(CTRL_CONFIRM);
   Serial.print("confirm: "); Serial.println(confirm);
   if (confirm) {
@@ -101,53 +56,35 @@ bool controller_loop(void) {
   return recording;
 }
 
-// -------------------- DISPLAY --------------------
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-int start;
-int end;
-int i = 0;
+// -------------------- TRAVEL --------------------
+int reading_n = 0;
+travel_type travel;
 
-void display_setup() {
-  while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-    Serial.println("Failed to boot SSD1306");
-    delay(1000);
-  }
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 12);
-  display.print("Booting...");
-  display.display();
-  Serial.println("display setup finished");
-  delay(2000);
-}
-
-void display_loop(bool recording, bool error, travel_type travel) {
-  display.clearDisplay();
-  display.setCursor(0, 12);
-  if (error) {
-    display.print("ERROR! :(");
-    display.display();
-  }
-  else if (recording) {
-    display.print("Recording");
-    display.display();
+void travel_loop() {
+  if (!recording) {
+    reading_n = 0;
+    travel.travel = 0;
+    travel.average_travel = 0;
+    travel.max_travel = 0;
   }
   else {
-    // print max travel and average travel
-    start = millis();
-    end = start + 2000;
-    if (i++ == 0) {
-      display.print("Ave: ");
-      display.print(travel.average_travel);
-    }
-    if (i-- == 1) {
-      display.print("Max: ");
-      display.print(travel.max_travel);
-    }
-    Serial.print("i: "); Serial.println(int(i));
+    analogReadResolution(12);
 
-    display.display();
+    int analog_value = analogRead(26);
+    Serial.print("analog value: "); Serial.println(analog_value);
+
+    travel.travel = map(analog_value, 0, 4096, 0, 150);
+    Serial.print("travel: "); Serial.println(travel.travel);
+
+    reading_n++;
+    travel.average_travel = ((travel.average_travel * (reading_n - 1)) + travel.travel) / reading_n;
+
+    if (travel.travel > travel.max_travel)
+      travel.max_travel = travel.travel;
+
+    Serial.print("Travel: "); Serial.println(travel.travel);
+    Serial.print("Average travel: "); Serial.println(travel.average_travel);
+    Serial.print("Max travel: "); Serial.println(travel.max_travel);
   }
 }
 
@@ -281,7 +218,7 @@ void imu_setup() {
   Serial.println(imu.gyro_data_rate);
 }
 
-imu_type imu_loop(bool recording) {
+imu_type imu_loop() {
   //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -324,34 +261,98 @@ imu_type imu_loop(bool recording) {
   return imu;
 }
 
-// -------------------- TRAVEL --------------------
-int reading_n = 0;
-travel_type travel;
+// -------------------- DISPLAY --------------------
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+int start;
+int end;
+int i = 0;
 
-void travel_loop(bool recording) {
-  if (!recording) {
-    reading_n = 0;
-    travel.travel = 0;
-    travel.average_travel = 0;
-    travel.max_travel = 0;
+void display_setup() {
+  while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println("Failed to boot SSD1306");
+    delay(1000);
+  }
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 12);
+  display.print("Booting...");
+  display.display();
+  Serial.println("display setup finished");
+  delay(2000);
+}
+
+void display_loop() {
+  display.clearDisplay();
+  display.setCursor(0, 12);
+  if (error) {
+    display.print("ERROR! :(");
+    display.display();
+  }
+  else if (recording) {
+    display.print("Recording");
+    display.display();
   }
   else {
-    analogReadResolution(12);
+    // print max travel and average travel
+    start = millis();
+    end = start + 2000;
+    if (i++ == 0) {
+      display.print("Ave: ");
+      display.print(travel.average_travel);
+    }
+    if (i-- == 1) {
+      display.print("Max: ");
+      display.print(travel.max_travel);
+    }
+    Serial.print("i: "); Serial.println(i);
 
-    int analog_value = analogRead(26);
-    Serial.print("analog value: "); Serial.println(analog_value);
-
-    travel.travel = map(analog_value, 0, 4096, 0, 150);
-    Serial.print("travel: "); Serial.println(travel);
-
-    reading_n++;
-    travel.average_travel = ((travel.average_travel * (reading_n - 1)) + travel.travel) / reading_n;
-
-    if (travel.travel > travel.max_travel)
-      travel.max_travel = travel.travel;
-
-    Serial.print("Travel: "); Serial.println(travel.travel);
-    Serial.print("Average travel: "); Serial.println(travel.average_travel);
-    Serial.print("Max travel: "); Serial.println(travel.max_travel);
+    display.display();
   }
+}
+
+// -------------------- BLUETOOTH --------------------
+SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
+//SerialPIO bt = SerialPIO(BT_TX_PIN, BT_RX_PIN);
+int state = 0;
+int tmp;
+
+void bluetooth_setup() {
+  pinMode(BT_RX_PIN, INPUT);
+  pinMode(BT_TX_PIN, OUTPUT);
+  pinMode(INTEGRATED_LED_PIN, OUTPUT);
+  pinMode(EXTERNAL_LED_PIN, OUTPUT);
+  digitalWrite(INTEGRATED_LED_PIN, LOW);
+  digitalWrite(EXTERNAL_LED_PIN, LOW);
+  bt.begin(9600);
+}
+
+void bluetooth_loop() {
+  digitalWrite(INTEGRATED_LED_PIN, HIGH);
+
+  // if data on softwareSerial buffer, show them on serial monitor
+  while (bt.available() > 0) {
+    tmp = bt.read();
+    if (tmp != 10 && tmp != 13 && tmp != 255) {
+      state = tmp;
+    }
+
+    Serial.println("tmp: " + String(tmp));
+  }
+
+  if (state == 2) {
+    digitalWrite(EXTERNAL_LED_PIN, HIGH);
+    bt.println("EXTERNAL LED: ON");
+  }
+  else {
+    digitalWrite(EXTERNAL_LED_PIN, LOW);
+    bt.println("EXTERNAL LED: OFF");
+  }
+
+  Serial.print("state: ");
+  Serial.println(state);
+  bt.print("state: ");
+  bt.println(state);
+
+  digitalWrite(INTEGRATED_LED_PIN, LOW);
 }
