@@ -88,7 +88,7 @@ void travel_loop() {
 }
 
 // -------------------- IMU --------------------
-Adafruit_LSM6DSOX sox;
+Adafruit_LSM6DSOX sox_fork;
 Adafruit_LSM6DSOX sox_frame;
 imu_type imu;
 imu_type imu_fork;
@@ -107,80 +107,89 @@ imu_type imu_frame;
   Gyro data rate [Hz]:
   0, 12.5, 26, 52, 104 (default), 208, 416, 833, 1660, 3330, 6660
 */
-#define ACCEL_RANGE LSM6DS_ACCEL_RANGE_16_G;
-#define GYRO_RANGE LSM6DS_GYRO_RANGE_2000_DPS;
-#define ACCEL_DATA_RATE LSM6DS_RATE_104_HZ;
-#define GYRO_DATA_RATE LSM6DS_RATE_104_HZ;
+#define ACCEL_RANGE LSM6DS_ACCEL_RANGE_16_G
+#define GYRO_RANGE LSM6DS_GYRO_RANGE_2000_DPS
+#define ACCEL_DATA_RATE LSM6DS_RATE_104_HZ
+#define GYRO_DATA_RATE LSM6DS_RATE_104_HZ
 
 void imu_setup() {
   int i = 0;
-  while (!sox.begin_I2C() && i < 3) {
+  while (!sox_fork.begin_I2C() && i < 3) {
     Serial.println("LSM6DSOX fork error");
     i++;
     delay(500);
   }
-  //int i = 0;
-  //while (!sox_frame.begin_I2C() && i < 3) {
-  //  Serial.println("LSM6DSOX frame error");
-  //  i++;
-  //  delay(500);
-  //}
-  //Serial.print("i: "); Serial.println(i);
-  //delay(5000);
+  i = 0;
+  while (!sox_frame.begin_I2C() && i < 3) {
+    Serial.println("LSM6DSOX frame error");
+    i++;
+    delay(500);
+  }
   if (i == 3)
     error = true;
   else {
-    // sox.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
+    sox_fork.setAccelRange(ACCEL_RANGE);
+    sox_fork.setGyroRange(GYRO_RANGE);
+    sox_fork.setAccelDataRate(ACCEL_DATA_RATE);
+    sox_fork.setGyroDataRate(GYRO_DATA_RATE);
 
-    // sox.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS );
-
-    // sox.setAccelDataRate(LSM6DS_RATE_12_5_HZ);
-
-    // sox.setGyroDataRate(LSM6DS_RATE_12_5_HZ);
+    sox_frame.setAccelRange(ACCEL_RANGE);
+    sox_frame.setGyroRange(GYRO_RANGE);
+    sox_frame.setAccelDataRate(ACCEL_DATA_RATE);
+    sox_frame.setGyroDataRate(GYRO_DATA_RATE);
   }
-
-  delay(5000);
 }
 
-imu_type imu_loop() {
-  //  /* Get a new normalized sensor event */
+void imu_loop() {
   sensors_event_t accel;
   sensors_event_t gyro;
   sensors_event_t temp;
-  sox.getEvent(&accel, &gyro, &temp);
 
-  imu.temperature = temp.temperature;
+  sox_fork.getEvent(&accel, &gyro, &temp);
 
-  Serial.print("\t\tTemperature ");
-  Serial.print(imu.temperature);
-  Serial.println(" deg C");
+  imu_fork.temperature = temp.temperature;
+  Serial.print("\t\tTemperature "); Serial.print(imu_fork.temperature); Serial.println(" deg C");
 
   /* Display the results (acceleration is measured in m/s^2) */
-  imu.accel_x = accel.acceleration.x;
-  imu.accel_y = accel.acceleration.y;
-  imu.accel_z = accel.acceleration.z;
-  Serial.print("\t\tAccel X: ");
-  Serial.print(imu.accel_x);
-  Serial.print(" \tY: ");
-  Serial.print(imu.accel_y);
-  Serial.print(" \tZ: ");
-  Serial.print(imu.accel_z);
+  imu_fork.accel_x = accel.acceleration.x;
+  imu_fork.accel_y = accel.acceleration.y;
+  imu_fork.accel_z = accel.acceleration.z;
+  Serial.print("\t\tFork accel X: "); Serial.print(imu_fork.accel_x);
+  Serial.print(" \tY: "); Serial.print(imu_fork.accel_y);
+  Serial.print(" \tZ: "); Serial.print(imu_fork.accel_z);
   Serial.println(" m/s^2 ");
 
   /* Display the results (rotation is measured in rad/s) */
-  imu.gyro_x = gyro.gyro.x;
-  imu.gyro_y = gyro.gyro.y;
-  imu.gyro_z = gyro.gyro.z;
-  Serial.print("\t\tGyro X: ");
-  Serial.print(imu.gyro_x);
-  Serial.print(" \tY: ");
-  Serial.print(imu.gyro_y);
-  Serial.print(" \tZ: ");
-  Serial.print(imu.gyro_z);
-  Serial.println(" radians/s ");
-  Serial.println();
+  imu_fork.gyro_x = gyro.gyro.x;
+  imu_fork.gyro_y = gyro.gyro.y;
+  imu_fork.gyro_z = gyro.gyro.z;
+  Serial.print("\t\tFork gyro X: "); Serial.print(imu_fork.gyro_x);
+  Serial.print(" \tY: "); Serial.print(imu_fork.gyro_y);
+  Serial.print(" \tZ: "); Serial.print(imu_fork.gyro_z);
+  Serial.println(" radians/s \n");
 
-  return imu;
+  sox_frame.getEvent(&accel, &gyro, &temp);
+  
+  imu_frame.temperature = temp.temperature;
+  Serial.print("\t\tTemperature "); Serial.print(imu_frame.temperature); Serial.println(" deg C");
+
+  /* Display the results (acceleration is measured in m/s^2) */
+  imu_frame.accel_x = accel.acceleration.x;
+  imu_frame.accel_y = accel.acceleration.y;
+  imu_frame.accel_z = accel.acceleration.z;
+  Serial.print("\t\tFork accel X: "); Serial.print(imu_frame.accel_x);
+  Serial.print(" \tY: "); Serial.print(imu_frame.accel_y);
+  Serial.print(" \tZ: "); Serial.print(imu_frame.accel_z);
+  Serial.println(" m/s^2 ");
+
+  /* Display the results (rotation is measured in rad/s) */
+  imu_frame.gyro_x = gyro.gyro.x;
+  imu_frame.gyro_y = gyro.gyro.y;
+  imu_frame.gyro_z = gyro.gyro.z;
+  Serial.print("\t\tFork gyro X: "); Serial.print(imu_frame.gyro_x);
+  Serial.print(" \tY: "); Serial.print(imu_frame.gyro_y);
+  Serial.print(" \tZ: "); Serial.print(imu_frame.gyro_z);
+  Serial.println(" radians/s \n");
 }
 
 // -------------------- DISPLAY --------------------
