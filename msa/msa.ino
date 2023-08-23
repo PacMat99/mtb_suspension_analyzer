@@ -12,12 +12,15 @@
 bool recording = false;
 bool error = false;
 
+int reading_n;
+travel_type travel;
+
 void setup() {
   Serial.begin(115200);
   Wire.begin();
   
   controller_setup();
-  //imu_setup();
+  imu_setup();
   display_setup();
   bluetooth_setup();
 }
@@ -28,8 +31,8 @@ void loop() {
   
   controller_loop();
   travel_loop();
-  //imu_loop();
-  //display_loop();
+  imu_loop();
+  display_loop();
   //bluetooth_loop();
   delay(10);
 }
@@ -45,8 +48,13 @@ bool controller_loop() {
   Serial.print("confirm: "); Serial.println(confirm);
   if (confirm) {
     recording = !recording;
-    if (recording)
+    if (recording) {
+      reading_n = 0;
+      travel.travel = 0;
+      travel.average_travel = 0;
+      travel.max_travel = 0;
       tone(BUZZER, 500, 500);
+    }
     else
       tone(BUZZER, 200, 500);
     delay(500);
@@ -57,17 +65,8 @@ bool controller_loop() {
 }
 
 // -------------------- TRAVEL --------------------
-int reading_n = 0;
-travel_type travel;
-
 void travel_loop() {
-  if (!recording) {
-    reading_n = 0;
-    travel.travel = 0;
-    travel.average_travel = 0;
-    travel.max_travel = 0;
-  }
-  else {
+  if (recording) {
     analogReadResolution(12);
 
     int analog_value = analogRead(26);
@@ -90,132 +89,57 @@ void travel_loop() {
 
 // -------------------- IMU --------------------
 Adafruit_LSM6DSOX sox;
+Adafruit_LSM6DSOX sox_frame;
 imu_type imu;
 imu_type imu_fork;
 imu_type imu_frame;
 
+/*
+  Accel range [G]:
+  +-2, +-4 (default), +-8, +-16
+
+  Gyro range [degrees/s]:
+  125, 250, 500, 1000, 2000 (default)
+
+  Accel data rate [Hz]:
+  0, 12.5, 26, 52, 104 (default), 208, 416, 833, 1660, 3330, 6660
+  
+  Gyro data rate [Hz]:
+  0, 12.5, 26, 52, 104 (default), 208, 416, 833, 1660, 3330, 6660
+*/
+#define ACCEL_RANGE LSM6DS_ACCEL_RANGE_16_G;
+#define GYRO_RANGE LSM6DS_GYRO_RANGE_2000_DPS;
+#define ACCEL_DATA_RATE LSM6DS_RATE_104_HZ;
+#define GYRO_DATA_RATE LSM6DS_RATE_104_HZ;
+
 void imu_setup() {
-  while (!sox.begin_I2C()) {
-    Serial.println("LSM6DSOX error");
+  int i = 0;
+  while (!sox.begin_I2C() && i < 3) {
+    Serial.println("LSM6DSOX fork error");
+    i++;
     delay(500);
   }
+  //int i = 0;
+  //while (!sox_frame.begin_I2C() && i < 3) {
+  //  Serial.println("LSM6DSOX frame error");
+  //  i++;
+  //  delay(500);
+  //}
+  //Serial.print("i: "); Serial.println(i);
+  //delay(5000);
+  if (i == 3)
+    error = true;
+  else {
+    // sox.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
 
-  // sox.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
-  Serial.print("Accelerometer range set to: ");
-  switch (sox.getAccelRange()) {
-    case LSM6DS_ACCEL_RANGE_2_G:
-      strcpy(imu.accel_range, "+-2G");
-      break;
-    case LSM6DS_ACCEL_RANGE_4_G:
-      strcpy(imu.accel_range, "+-4G");
-      break;
-    case LSM6DS_ACCEL_RANGE_8_G:
-      strcpy(imu.accel_range, "+-8G");
-      break;
-    case LSM6DS_ACCEL_RANGE_16_G:
-      strcpy(imu.accel_range, "+-16G");
-      break;
-  }
-  Serial.println(imu.accel_range);
+    // sox.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS );
 
-  // sox.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS );
-  Serial.print("Gyro range set to: ");
-  switch (sox.getGyroRange()) {
-    case LSM6DS_GYRO_RANGE_125_DPS:
-      strcpy(imu.gyro_range, "125 degrees/s");
-      break;
-    case LSM6DS_GYRO_RANGE_250_DPS:
-      strcpy(imu.gyro_range, "250 degrees/s");
-      break;
-    case LSM6DS_GYRO_RANGE_500_DPS:
-      strcpy(imu.gyro_range, "500 degrees/s");
-      break;
-    case LSM6DS_GYRO_RANGE_1000_DPS:
-      strcpy(imu.gyro_range, "1000 degrees/s");
-      break;
-    case LSM6DS_GYRO_RANGE_2000_DPS:
-      strcpy(imu.gyro_range, "2000 degrees/s");
-      break;
-  }
-  Serial.println(imu.gyro_range);
+    // sox.setAccelDataRate(LSM6DS_RATE_12_5_HZ);
 
-  // sox.setAccelDataRate(LSM6DS_RATE_12_5_HZ);
-  Serial.print("Accelerometer data rate set to: ");
-  switch (sox.getAccelDataRate()) {
-    case LSM6DS_RATE_SHUTDOWN:
-      strcpy(imu.accel_data_rate, "0 Hz");
-      break;
-    case LSM6DS_RATE_12_5_HZ:
-      strcpy(imu.accel_data_rate, "12.5 Hz");
-      break;
-    case LSM6DS_RATE_26_HZ:
-      strcpy(imu.accel_data_rate, "26 Hz");
-      break;
-    case LSM6DS_RATE_52_HZ:
-      strcpy(imu.accel_data_rate, "52 Hz");
-      break;
-    case LSM6DS_RATE_104_HZ:
-      strcpy(imu.accel_data_rate, "104 Hz");
-      break;
-    case LSM6DS_RATE_208_HZ:
-      strcpy(imu.accel_data_rate, "208 Hz");
-      break;
-    case LSM6DS_RATE_416_HZ:
-      strcpy(imu.accel_data_rate, "416 Hz");
-      break;
-    case LSM6DS_RATE_833_HZ:
-      strcpy(imu.accel_data_rate, "833 Hz");
-      break;
-    case LSM6DS_RATE_1_66K_HZ:
-      strcpy(imu.accel_data_rate, "1.66 KHz");
-      break;
-    case LSM6DS_RATE_3_33K_HZ:
-      strcpy(imu.accel_data_rate, "3.33 KHz");
-      break;
-    case LSM6DS_RATE_6_66K_HZ:
-      strcpy(imu.accel_data_rate, "6.66 KHz");
-      break;
+    // sox.setGyroDataRate(LSM6DS_RATE_12_5_HZ);
   }
-  Serial.println(imu.accel_data_rate);
 
-  // sox.setGyroDataRate(LSM6DS_RATE_12_5_HZ);
-  Serial.print("Gyro data rate set to: ");
-  switch (sox.getGyroDataRate()) {
-    case LSM6DS_RATE_SHUTDOWN:
-      strcpy(imu.gyro_data_rate, "0 Hz");
-      break;
-    case LSM6DS_RATE_12_5_HZ:
-      strcpy(imu.gyro_data_rate, "12.5 Hz");
-      break;
-    case LSM6DS_RATE_26_HZ:
-      strcpy(imu.gyro_data_rate, "26 Hz");
-      break;
-    case LSM6DS_RATE_52_HZ:
-      strcpy(imu.gyro_data_rate, "52 Hz");
-      break;
-    case LSM6DS_RATE_104_HZ:
-      strcpy(imu.gyro_data_rate, "104 Hz");
-      break;
-    case LSM6DS_RATE_208_HZ:
-      strcpy(imu.gyro_data_rate, "208 Hz");
-      break;
-    case LSM6DS_RATE_416_HZ:
-      strcpy(imu.gyro_data_rate, "416 Hz");
-      break;
-    case LSM6DS_RATE_833_HZ:
-      strcpy(imu.gyro_data_rate, "833 Hz");
-      break;
-    case LSM6DS_RATE_1_66K_HZ:
-      strcpy(imu.gyro_data_rate, "1.66 KHz");
-      break;
-    case LSM6DS_RATE_3_33K_HZ:
-      strcpy(imu.gyro_data_rate, "3.33 KHz");
-      break;
-    case LSM6DS_RATE_6_66K_HZ:
-      strcpy(imu.gyro_data_rate, "6.66 KHz");
-      break;
-  }
-  Serial.println(imu.gyro_data_rate);
+  delay(5000);
 }
 
 imu_type imu_loop() {
@@ -256,30 +180,32 @@ imu_type imu_loop() {
   Serial.println(" radians/s ");
   Serial.println();
 
-  imu.error = false;
-
   return imu;
 }
 
 // -------------------- DISPLAY --------------------
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-int start;
-int end;
-int i = 0;
+int timer = 0;
+bool status = false;
 
 void display_setup() {
-  while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+  int i = 0;
+  while (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS) && i < 3) {
     Serial.println("Failed to boot SSD1306");
-    delay(1000);
+    i++;
+    delay(500);
   }
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 12);
-  display.print("Booting...");
-  display.display();
-  Serial.println("display setup finished");
-  delay(2000);
+  if (i == 3)
+    error = true;
+  else {
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 12);
+    display.print("Booting...");
+    display.display();
+    delay(2000);
+  }
 }
 
 void display_loop() {
@@ -295,17 +221,19 @@ void display_loop() {
   }
   else {
     // print max travel and average travel
-    start = millis();
-    end = start + 2000;
-    if (i++ == 0) {
+    if (millis() >= timer) {
+      timer = millis() + 2000;
+      status = !status;
+    }
+    if (!status) {
       display.print("Ave: ");
       display.print(travel.average_travel);
     }
-    if (i-- == 1) {
+    if (status) {
       display.print("Max: ");
       display.print(travel.max_travel);
     }
-    Serial.print("i: "); Serial.println(i);
+    Serial.print("status: "); Serial.println(status);
 
     display.display();
   }
