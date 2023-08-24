@@ -25,6 +25,10 @@ void setup() {
   bluetooth_setup();
 }
 
+void setup1() {
+
+}
+
 void loop() {
   Serial.print("SDA: "); Serial.println(SDA);
   Serial.print("SCL: "); Serial.println(SCL);
@@ -34,7 +38,12 @@ void loop() {
   imu_loop();
   display_loop();
   //bluetooth_loop();
-  delay(10);
+  //check_i2c_devices();
+  delay(1000);
+}
+
+void loop1() {
+
 }
 
 // -------------------- CONTROLLER --------------------
@@ -114,13 +123,13 @@ imu_type imu_frame;
 
 void imu_setup() {
   int i = 0;
-  while (!sox_fork.begin_I2C() && i < 3) {
+  while (!sox_fork.begin_I2C(0x6A) && i < 3) {
     Serial.println("LSM6DSOX fork error");
     i++;
     delay(500);
   }
   i = 0;
-  while (!sox_frame.begin_I2C() && i < 3) {
+  while (!sox_frame.begin_I2C(0x6B) && i < 3) {
     Serial.println("LSM6DSOX frame error");
     i++;
     delay(500);
@@ -292,4 +301,43 @@ void bluetooth_loop() {
   bt.println(state);
 
   digitalWrite(INTEGRATED_LED_PIN, LOW);
+}
+
+// -------------------- CALIBRATION AND DEBUG FUNCTIONS --------------------
+void check_i2c_devices() {
+  byte err, address;
+  int nDevices;
+
+  Serial.println("Scanning...");
+
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    err = Wire.endTransmission();
+
+    if (err == 0) {
+      Serial.print("I2C device found at address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    }
+    else if (err==4) {
+      Serial.print("Unknown error at address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found\n");
+  else
+    Serial.println("done\n");
+
+  delay(5000);           // wait 5 seconds for next scan
 }
