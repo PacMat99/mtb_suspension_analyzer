@@ -186,7 +186,7 @@ void imu_loop() {
   imu_frame.accel_x = accel.acceleration.x;
   imu_frame.accel_y = accel.acceleration.y;
   imu_frame.accel_z = accel.acceleration.z;
-  Serial.print("\t\tFork accel X: "); Serial.print(imu_frame.accel_x);
+  Serial.print("\t\tFrame accel X: "); Serial.print(imu_frame.accel_x);
   Serial.print(" \tY: "); Serial.print(imu_frame.accel_y);
   Serial.print(" \tZ: "); Serial.print(imu_frame.accel_z);
   Serial.println(" m/s^2 ");
@@ -195,7 +195,7 @@ void imu_loop() {
   imu_frame.gyro_x = gyro.gyro.x;
   imu_frame.gyro_y = gyro.gyro.y;
   imu_frame.gyro_z = gyro.gyro.z;
-  Serial.print("\t\tFork gyro X: "); Serial.print(imu_frame.gyro_x);
+  Serial.print("\t\tFrame gyro X: "); Serial.print(imu_frame.gyro_x);
   Serial.print(" \tY: "); Serial.print(imu_frame.gyro_y);
   Serial.print(" \tZ: "); Serial.print(imu_frame.gyro_z);
   Serial.println(" radians/s \n");
