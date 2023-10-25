@@ -1,4 +1,5 @@
 #include <string>
+
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
@@ -6,6 +7,7 @@
 #include <SoftwareSerial.h>
 //#include <Fonts/FreeMono9pt7b.h>
 #include <Adafruit_LSM6DSOX.h>
+
 #include "types.h"
 #include "pins.h"
 
@@ -34,7 +36,6 @@ int main() {
     Serial.print("SCL: "); Serial.println(SCL);
 
     controller_loop();
-    //travel_loop();
     imu_loop();
     display_loop();
     //bluetooth_loop();
@@ -73,29 +74,6 @@ bool controller_loop() {
     Serial.print("Recording: ");
     Serial.println(recording);
     return recording;
-}
-
-// -------------------- TRAVEL --------------------
-void travel_loop() {
-    if (recording) {
-        analogReadResolution(12);
-
-        int analog_value = analogRead(26);
-        Serial.print("analog value: "); Serial.println(analog_value);
-
-        travel.travel = map(analog_value, 0, 4096, 0, 150);
-        Serial.print("travel: "); Serial.println(travel.travel);
-
-        reading_n++;
-        travel.average_travel = ((travel.average_travel * (reading_n - 1)) + travel.travel) / reading_n;
-
-        if (travel.travel > travel.max_travel)
-            travel.max_travel = travel.travel;
-
-        Serial.print("Travel: "); Serial.println(travel.travel);
-        Serial.print("Average travel: "); Serial.println(travel.average_travel);
-        Serial.print("Max travel: "); Serial.println(travel.max_travel);
-    }
 }
 
 // -------------------- IMU --------------------

@@ -14,4 +14,16 @@
             "visibility": "hidden"
         },
     },
+    "files.associations": {
+        "cstddef": "c",
+        "array": "c",
+        "deque": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "ranges": "c",
+        "pins.h": "c"
+    },
 }
