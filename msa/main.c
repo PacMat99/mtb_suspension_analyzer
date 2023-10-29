@@ -2,15 +2,48 @@
 
 #include <Wire.h>
 #include <SPI.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <lib/Adafruit_GFX.h>
+#include "Adafruit_SSD1306.h"
 #include <SoftwareSerial.h>
 //#include <Fonts/FreeMono9pt7b.h>
 #include <Adafruit_LSM6DSOX.h>
 
-#include "types.h"
-#include "pins.h"
+// -------------------- ADDITIONAL TYPES --------------------
+struct travel_type {
+    int travel;
+    float average_travel;
+    int max_travel;
+};
+typedef struct travel_type ttravel_type;
 
+struct imu_type {
+    float temperature;
+    float accel_x;
+    float accel_y;
+    float accel_z;
+    float gyro_x;
+    float gyro_y;
+    float gyro_z;
+};
+typedef struct imu_type timu_type;
+
+// ---------- BLUETOOTH PINOUT ----------
+#define BT_TX_PIN 0
+#define BT_RX_PIN 1
+#define INTEGRATED_LED_PIN 25
+#define EXTERNAL_LED_PIN 21
+
+// ---------- CONTROLLER PINOUT ----------
+#define CTRL_CONFIRM 18
+#define BUZZER 19
+
+// ---------- DISPLAY PINOUT ----------
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C // Address 0x3C for 128x32
+
+// -------------------- MAIN --------------------
 bool recording = false;
 bool error = false;
 
