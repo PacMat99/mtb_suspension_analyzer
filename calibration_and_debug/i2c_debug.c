@@ -1,4 +1,4 @@
-void check_i2c_devices() {
+int main() {
     byte err, address;
     int nDevices;
 
@@ -34,4 +34,5 @@ void check_i2c_devices() {
         Serial.println("done\n");
 
     delay(5000);           // wait 5 seconds for next scan
+    return 0;
 }
