@@ -62,12 +62,11 @@ struct imu_type {
     float gyro_y;
     float gyro_z;
 };
-typedef struct imu_type timu_type;
 
 Adafruit_LSM6DSOX sox_fork;
 Adafruit_LSM6DSOX sox_frame;
-imu_type imu_fork;
-imu_type imu_frame;
+imu_type imu_fork_top;
+imu_type imu_fork_bottom;
 
 void imu_loop() {
     sensors_event_t accel;
@@ -76,37 +75,37 @@ void imu_loop() {
 
     sox_fork.getEvent(&accel, &gyro, &temp);
 
-    imu_fork.temperature = temp.temperature;
-    printf("\t\tTemperature %.3f deg C\n", imu_fork.temperature);
+    imu_fork_top.temperature = temp.temperature;
+    printf("\t\tTemperature top: %.3f deg C\n", imu_fork_top.temperature);
 
     /* Display the results (acceleration is measured in m/s^2) */
-    imu_fork.accel_x = accel.acceleration.x;
-    imu_fork.accel_y = accel.acceleration.y;
-    imu_fork.accel_z = accel.acceleration.z;
-    printf("\t\tFork accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork.accel_x, imu_fork.accel_y, imu_fork.accel_z);
+    imu_fork_top.accel_x = accel.acceleration.x;
+    imu_fork_top.accel_y = accel.acceleration.y;
+    imu_fork_top.accel_z = accel.acceleration.z;
+    printf("\t\tFork top accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork_top.accel_x, imu_fork_top.accel_y, imu_fork_top.accel_z);
 
     /* Display the results (rotation is measured in rad/s) */
-    imu_fork.gyro_x = gyro.gyro.x;
-    imu_fork.gyro_y = gyro.gyro.y;
-    imu_fork.gyro_z = gyro.gyro.z;
-    printf("\t\tFork gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork.gyro_x, imu_fork.gyro_y, imu_fork.gyro_z);
+    imu_fork_top.gyro_x = gyro.gyro.x;
+    imu_fork_top.gyro_y = gyro.gyro.y;
+    imu_fork_top.gyro_z = gyro.gyro.z;
+    printf("\t\tFork top gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork_top.gyro_x, imu_fork_top.gyro_y, imu_fork_top.gyro_z);
 
     sox_frame.getEvent(&accel, &gyro, &temp);
 
-    imu_frame.temperature = temp.temperature;
-    printf("\t\tTemperature %.3f deg C\n", imu_frame.temperature);
+    imu_fork_bottom.temperature = temp.temperature;
+    printf("\t\tTemperature bottom: %.3f deg C\n", imu_fork_bottom.temperature);
 
     /* Display the results (acceleration is measured in m/s^2) */
-    imu_frame.accel_x = accel.acceleration.x;
-    imu_frame.accel_y = accel.acceleration.y;
-    imu_frame.accel_z = accel.acceleration.z;
-    printf("\t\tFork accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_frame.accel_x, imu_frame.accel_y, imu_frame.accel_z);
+    imu_fork_bottom.accel_x = accel.acceleration.x;
+    imu_fork_bottom.accel_y = accel.acceleration.y;
+    imu_fork_bottom.accel_z = accel.acceleration.z;
+    printf("\t\tFork bottom accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork_bottom.accel_x, imu_fork_bottom.accel_y, imu_fork_bottom.accel_z);
 
     /* Display the results (rotation is measured in rad/s) */
-    imu_frame.gyro_x = gyro.gyro.x;
-    imu_frame.gyro_y = gyro.gyro.y;
-    imu_frame.gyro_z = gyro.gyro.z;
-    printf("\t\tFork gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_frame.gyro_x, imu_frame.gyro_y, imu_frame.gyro_z);
+    imu_fork_bottom.gyro_x = gyro.gyro.x;
+    imu_fork_bottom.gyro_y = gyro.gyro.y;
+    imu_fork_bottom.gyro_z = gyro.gyro.z;
+    printf("\t\tFork bottom gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork_bottom.gyro_x, imu_fork_bottom.gyro_y, imu_fork_bottom.gyro_z);
 }
 
 // -------- DISPLAY CODE --------
@@ -119,14 +118,10 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 uint8_t timer = 0;
 uint8_t change_info = 0;
 
-void display_loop(uint8_t recording, uint8_t error) {
+void display_loop(uint8_t recording, float average_travel, float max_travel) {
     display.clearDisplay();
     display.setCursor(0, 12);
-    if (error) {
-        display.print("ERROR! :(");
-        display.display();
-    }
-    else if (recording) {
+    if (recording) {
         char str[] = "recording";
         uint8_t len = strlen(str);
         while (strlen(str) > 3) {
@@ -145,11 +140,11 @@ void display_loop(uint8_t recording, uint8_t error) {
         }
         if (!change_info) {
             display.print("Ave: ");
-            display.print(travel.average_travel);
+            display.print(average_travel);
         }
         if (change_info) {
             display.print("Max: ");
-            display.print(travel.max_travel);
+            display.print(max_travel);
         }
         printf("change_info: %d\n", change_info);
 
@@ -221,11 +216,17 @@ int main() {
 
     // START IMU SETUP
     while (!sox_fork.begin_I2C(0x6A)) {
-        display_loop(0, 1);
+        display.clearDisplay();
+        display.setCursor(0, 12);
+        display.print("TOP IMU FORK ERR");
+        display.display();
         sleep_ms(500);
     }
     while (!sox_frame.begin_I2C(0x6B)) {
-        display_loop(0, 1);
+        display.clearDisplay();
+        display.setCursor(0, 12);
+        display.print("BOTTOM IMU FORK ERR");
+        display.display();
         sleep_ms(500);
     }
 
@@ -264,6 +265,9 @@ int main() {
 
     int recording = 0;
     int reading_n = 0;
+    float travel = 0;
+    float average_travel = 0;
+    float max_travel = 0;
     while (1) {
         recording = controller_loop(recording);
         if (!recording)
@@ -275,11 +279,12 @@ int main() {
         imu_loop();
         // TODO: travel type has been deleted since it was useless
         // TODO: calculate the following:
-        int travel;
-        float average_travel;
-        int max_travel;
+        travel = 5;
+        average_travel = travel / reading_n;
+        if (travel > max_travel)
+            max_travel = travel;
 
-        display_loop();
+        display_loop(recording, average_travel, max_travel);
         //bluetooth_loop();
         sleep_ms(5);
     }
