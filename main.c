@@ -286,7 +286,8 @@ int main() {
 
         display_loop(recording, average_travel, max_travel);
         //bluetooth_loop();
-        sleep_ms(5);
+        sleep_ms(500); // change to 5 and comment all printf after sensors testing
+        //sleep_ms(5);
     }
 
     return 0;
