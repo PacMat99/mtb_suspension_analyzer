@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string>
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 #include "hardware/i2c.h"
@@ -7,14 +6,16 @@
 #include "hardware/timer.h"
 #include "hardware/watchdog.h"
 #include "hardware/clocks.h"
+#include "hardware/i2c.h"
+#include "lib/raspberry26x32.h"
+#include "lib/ssd1306_font.h"
 
-#include <Wire.h>
-#include <SPI.h>
-#include <lib/Adafruit_GFX.h>
-#include "Adafruit_SSD1306.h"
-#include <SoftwareSerial.h>
-//#include <Fonts/FreeMono9pt7b.h>
-#include <Adafruit_LSM6DSOX.h>
+// #include <SPI.h>
+// #include <lib/Adafruit_GFX.h>
+// #include "Adafruit_SSD1306.h"
+// #include <SoftwareSerial.h>
+// //#include <Fonts/FreeMono9pt7b.h>
+// #include <Adafruit_LSM6DSOX.h>
 
 // -------- CONTROLLER --------
 #define CTRL_CONFIRM 18
@@ -50,67 +51,72 @@ uint8_t controller_loop(uint8_t recording) {
     Gyro data rate [Hz]:
     0, 12.5, 26, 52, 104 (default), 208, 416, 833, 1660, 3330, 6660
 */
-#define ACCEL_RANGE LSM6DS_ACCEL_RANGE_16_G
-#define GYRO_RANGE LSM6DS_GYRO_RANGE_2000_DPS
-#define ACCEL_DATA_RATE LSM6DS_RATE_104_HZ
-#define GYRO_DATA_RATE LSM6DS_RATE_104_HZ
-
-struct imu_type {
-    float temperature;
-    float accel_x;
-    float accel_y;
-    float accel_z;
-    float gyro_x;
-    float gyro_y;
-    float gyro_z;
-};
-
-Adafruit_LSM6DSOX sox_fork;
-Adafruit_LSM6DSOX sox_frame;
-imu_type imu_fork_top;
-imu_type imu_fork_bottom;
-
-void imu_loop() {
-    sensors_event_t accel;
-    sensors_event_t gyro;
-    sensors_event_t temp;
-
-    sox_fork.getEvent(&accel, &gyro, &temp);
-
-    imu_fork_top.temperature = temp.temperature;
-    printf("\t\tTemperature top: %.3f deg C\n", imu_fork_top.temperature);
-
-    /* Display the results (acceleration is measured in m/s^2) */
-    imu_fork_top.accel_x = accel.acceleration.x;
-    imu_fork_top.accel_y = accel.acceleration.y;
-    imu_fork_top.accel_z = accel.acceleration.z;
-    printf("\t\tFork top accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork_top.accel_x, imu_fork_top.accel_y, imu_fork_top.accel_z);
-
-    /* Display the results (rotation is measured in rad/s) */
-    imu_fork_top.gyro_x = gyro.gyro.x;
-    imu_fork_top.gyro_y = gyro.gyro.y;
-    imu_fork_top.gyro_z = gyro.gyro.z;
-    printf("\t\tFork top gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork_top.gyro_x, imu_fork_top.gyro_y, imu_fork_top.gyro_z);
-
-    sox_frame.getEvent(&accel, &gyro, &temp);
-
-    imu_fork_bottom.temperature = temp.temperature;
-    printf("\t\tTemperature bottom: %.3f deg C\n", imu_fork_bottom.temperature);
-
-    /* Display the results (acceleration is measured in m/s^2) */
-    imu_fork_bottom.accel_x = accel.acceleration.x;
-    imu_fork_bottom.accel_y = accel.acceleration.y;
-    imu_fork_bottom.accel_z = accel.acceleration.z;
-    printf("\t\tFork bottom accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork_bottom.accel_x, imu_fork_bottom.accel_y, imu_fork_bottom.accel_z);
-
-    /* Display the results (rotation is measured in rad/s) */
-    imu_fork_bottom.gyro_x = gyro.gyro.x;
-    imu_fork_bottom.gyro_y = gyro.gyro.y;
-    imu_fork_bottom.gyro_z = gyro.gyro.z;
-    printf("\t\tFork bottom gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork_bottom.gyro_x, imu_fork_bottom.gyro_y, imu_fork_bottom.gyro_z);
-}
+//#define ACCEL_RANGE LSM6DS_ACCEL_RANGE_16_G
+//#define GYRO_RANGE LSM6DS_GYRO_RANGE_2000_DPS
+//#define ACCEL_DATA_RATE LSM6DS_RATE_104_HZ
+//#define GYRO_DATA_RATE LSM6DS_RATE_104_HZ
+//
+//struct imu_type {
+//    float temperature;
+//    float accel_x;
+//    float accel_y;
+//    float accel_z;
+//    float gyro_x;
+//    float gyro_y;
+//    float gyro_z;
+//};
+//
+//Adafruit_LSM6DSOX sox_fork;
+//Adafruit_LSM6DSOX sox_frame;
+//imu_type imu_fork_top;
+//imu_type imu_fork_bottom;
+//
+//void imu_loop() {
+//    sensors_event_t accel;
+//    sensors_event_t gyro;
+//    sensors_event_t temp;
+//
+//    sox_fork.getEvent(&accel, &gyro, &temp);
+//
+//    imu_fork_top.temperature = temp.temperature;
+//    printf("\t\tTemperature top: %.3f deg C\n", imu_fork_top.temperature);
+//
+//    /* Display the results (acceleration is measured in m/s^2) */
+//    imu_fork_top.accel_x = accel.acceleration.x;
+//    imu_fork_top.accel_y = accel.acceleration.y;
+//    imu_fork_top.accel_z = accel.acceleration.z;
+//    printf("\t\tFork top accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork_top.accel_x, imu_fork_top.accel_y, imu_fork_top.accel_z);
+//
+//    /* Display the results (rotation is measured in rad/s) */
+//    imu_fork_top.gyro_x = gyro.gyro.x;
+//    imu_fork_top.gyro_y = gyro.gyro.y;
+//    imu_fork_top.gyro_z = gyro.gyro.z;
+//    printf("\t\tFork top gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork_top.gyro_x, imu_fork_top.gyro_y, imu_fork_top.gyro_z);
+//
+//    sox_frame.getEvent(&accel, &gyro, &temp);
+//
+//    imu_fork_bottom.temperature = temp.temperature;
+//    printf("\t\tTemperature bottom: %.3f deg C\n", imu_fork_bottom.temperature);
+//
+//    /* Display the results (acceleration is measured in m/s^2) */
+//    imu_fork_bottom.accel_x = accel.acceleration.x;
+//    imu_fork_bottom.accel_y = accel.acceleration.y;
+//    imu_fork_bottom.accel_z = accel.acceleration.z;
+//    printf("\t\tFork bottom accel X: %.3f\tY: %.3f\tZ: %.3fm/s^2\n", imu_fork_bottom.accel_x, imu_fork_bottom.accel_y, imu_fork_bottom.accel_z);
+//
+//    /* Display the results (rotation is measured in rad/s) */
+//    imu_fork_bottom.gyro_x = gyro.gyro.x;
+//    imu_fork_bottom.gyro_y = gyro.gyro.y;
+//    imu_fork_bottom.gyro_z = gyro.gyro.z;
+//    printf("\t\tFork bottom gyro X: %.3f\tY: %.3f\tZ: %.3fradians/s\n", imu_fork_bottom.gyro_x, imu_fork_bottom.gyro_y, imu_fork_bottom.gyro_z);
+//}
 
 // -------- DISPLAY CODE --------
+/*
+GPIO PICO_DEFAULT_I2C_SDA_PIN (on Pico this is GP4 (pin 6)) -> SDA on display board
+GPIO PICO_DEFAULT_I2C_SCL_PIN (on Pico this is GP5 (pin 7)) -> SCL on display board
+*/
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -120,14 +126,24 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 uint8_t timer = 0;
 uint8_t change_info = 0;
 
+uint8_t str_len(char *str) {
+    uint8_t count = 0;
+
+    while (str[count] != '\0')
+        count++;
+
+    return count;
+}
+
 void display_loop(uint8_t recording, float average_travel, float max_travel) {
     display.clearDisplay();
     display.setCursor(0, 12);
     if (recording) {
         char str[] = "recording";
-        uint8_t len = strlen(str);
-        while (strlen(str) > 3) {
+        uint8_t len = str_len(str);
+        while (len > 3) {
             str[len - 1] = '\0';
+            len = str_len(str);
             display.clearDisplay();
             display.print(str);
             display.display();
@@ -155,43 +171,43 @@ void display_loop(uint8_t recording, float average_travel, float max_travel) {
 }
 
 // -------- BLUETOOTH CODE --------
-#define BT_TX_PIN 0
-#define BT_RX_PIN 1
-#define INTEGRATED_LED_PIN 25
-#define EXTERNAL_LED_PIN 21
-SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
-//SerialPIO bt = SerialPIO(BT_TX_PIN, BT_RX_PIN);
-
-void bluetooth_loop() {
-    int state = 0;
-    int tmp;
-
-    digitalWrite(INTEGRATED_LED_PIN, HIGH);
-
-    // if data on softwareSerial buffer, show them on serial monitor
-    while (bt.available() > 0) {
-        tmp = bt.read();
-        if (tmp != 10 && tmp != 13 && tmp != 255) {
-            state = tmp;
-        }
-
-        printf("tmp: %s\n", tmp);
-    }
-
-    if (state == 2) {
-        digitalWrite(EXTERNAL_LED_PIN, HIGH);
-        bt.println("EXTERNAL LED: ON");
-    }
-    else {
-        digitalWrite(EXTERNAL_LED_PIN, LOW);
-        bt.println("EXTERNAL LED: OFF");
-    }
-
-    printf("state: %d\n", state);
-    bt.print("state: "); bt.println(state);
-
-    digitalWrite(INTEGRATED_LED_PIN, LOW);
-}
+//#define BT_TX_PIN 0
+//#define BT_RX_PIN 1
+//#define INTEGRATED_LED_PIN 25
+//#define EXTERNAL_LED_PIN 21
+//SoftwareSerial bt = SoftwareSerial(BT_RX_PIN, BT_TX_PIN);
+////SerialPIO bt = SerialPIO(BT_TX_PIN, BT_RX_PIN);
+//
+//void bluetooth_loop() {
+//    int state = 0;
+//    int tmp;
+//
+//    digitalWrite(INTEGRATED_LED_PIN, HIGH);
+//
+//    // if data on softwareSerial buffer, show them on serial monitor
+//    while (bt.available() > 0) {
+//        tmp = bt.read();
+//        if (tmp != 10 && tmp != 13 && tmp != 255) {
+//            state = tmp;
+//        }
+//
+//        printf("tmp: %s\n", tmp);
+//    }
+//
+//    if (state == 2) {
+//        digitalWrite(EXTERNAL_LED_PIN, HIGH);
+//        bt.println("EXTERNAL LED: ON");
+//    }
+//    else {
+//        digitalWrite(EXTERNAL_LED_PIN, LOW);
+//        bt.println("EXTERNAL LED: OFF");
+//    }
+//
+//    printf("state: %d\n", state);
+//    bt.print("state: "); bt.println(state);
+//
+//    digitalWrite(INTEGRATED_LED_PIN, LOW);
+//}
 
 // SPI Defines
 // We are going to use SPI 0, and allocate it to the following GPIO pins
@@ -274,53 +290,41 @@ int main() {
     // END DISPLAY SETUP
 
     // START IMU SETUP
-    while (!sox_fork.begin_I2C(0x6A)) {
-        display.clearDisplay();
-        display.setCursor(0, 12);
-        display.print("TOP IMU FORK ERR");
-        display.display();
-        sleep_ms(500);
-    }
-    while (!sox_frame.begin_I2C(0x6B)) {
-        display.clearDisplay();
-        display.setCursor(0, 12);
-        display.print("BOTTOM IMU FORK ERR");
-        display.display();
-        sleep_ms(500);
-    }
-
-    sox_fork.setAccelRange(ACCEL_RANGE);
-    sox_fork.setGyroRange(GYRO_RANGE);
-    sox_fork.setAccelDataRate(ACCEL_DATA_RATE);
-    sox_fork.setGyroDataRate(GYRO_DATA_RATE);
-
-    sox_frame.setAccelRange(ACCEL_RANGE);
-    sox_frame.setGyroRange(GYRO_RANGE);
-    sox_frame.setAccelDataRate(ACCEL_DATA_RATE);
-    sox_frame.setGyroDataRate(GYRO_DATA_RATE);
+//    while (!sox_fork.begin_I2C(0x6A)) {
+//        display.clearDisplay();
+//        display.setCursor(0, 12);
+//        display.print("TOP IMU FORK ERR");
+//        display.display();
+//        sleep_ms(500);
+//    }
+//    while (!sox_frame.begin_I2C(0x6B)) {
+//        display.clearDisplay();
+//        display.setCursor(0, 12);
+//        display.print("BOTTOM IMU FORK ERR");
+//        display.display();
+//        sleep_ms(500);
+//    }
+//
+//    sox_fork.setAccelRange(ACCEL_RANGE);
+//    sox_fork.setGyroRange(GYRO_RANGE);
+//    sox_fork.setAccelDataRate(ACCEL_DATA_RATE);
+//    sox_fork.setGyroDataRate(GYRO_DATA_RATE);
+//
+//    sox_frame.setAccelRange(ACCEL_RANGE);
+//    sox_frame.setGyroRange(GYRO_RANGE);
+//    sox_frame.setAccelDataRate(ACCEL_DATA_RATE);
+//    sox_frame.setGyroDataRate(GYRO_DATA_RATE);
     // END IMU SETUP
 
     // START BLUETOOTH SETUP
-    pinMode(BT_RX_PIN, INPUT);
-    pinMode(BT_TX_PIN, OUTPUT);
-    pinMode(INTEGRATED_LED_PIN, OUTPUT);
-    pinMode(EXTERNAL_LED_PIN, OUTPUT);
-    digitalWrite(INTEGRATED_LED_PIN, LOW);
-    digitalWrite(EXTERNAL_LED_PIN, LOW);
-    bt.begin(9600);
+//    pinMode(BT_RX_PIN, INPUT);
+//    pinMode(BT_TX_PIN, OUTPUT);
+//    pinMode(INTEGRATED_LED_PIN, OUTPUT);
+//    pinMode(EXTERNAL_LED_PIN, OUTPUT);
+//    digitalWrite(INTEGRATED_LED_PIN, LOW);
+//    digitalWrite(EXTERNAL_LED_PIN, LOW);
+//    bt.begin(9600);
     // END BLUETOOTH SETUP
-
-
-
-
-    Wire.begin();
-
-
-
-
-
-    printf("SDA: %d\n", SDA);
-    printf("SCL: %d\n", SCL);
 
     int recording = 0;
     int reading_n = 0;

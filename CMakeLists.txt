@@ -33,25 +33,23 @@ pico_set_program_version(msa "0.1")
 pico_enable_stdio_uart(msa 1)
 pico_enable_stdio_usb(msa 1)
 
-# Add the standard library to the build
+# Add the additional libraries to the build
 target_link_libraries(msa
-        pico_stdlib)
+    pico_stdlib
+    hardware_spi
+    hardware_i2c
+    hardware_pio
+    hardware_timer
+    hardware_watchdog
+    hardware_clocks
+    ssd1306_i2c
+    hardware_i2c)
 
 # Add the standard include files to the build
 target_include_directories(msa PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
   ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
 )
-
-# Add any user requested libraries
-target_link_libraries(msa 
-        hardware_spi
-        hardware_i2c
-        hardware_pio
-        hardware_timer
-        hardware_watchdog
-        hardware_clocks
-        )
 
 pico_add_extra_outputs(msa)
 

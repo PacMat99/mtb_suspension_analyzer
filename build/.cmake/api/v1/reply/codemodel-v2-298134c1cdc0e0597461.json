@@ -1135,7 +1135,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ELF2UF2Build::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ELF2UF2Build-Debug-878edde83da4660d16a9.json",
+					"jsonFile" : "target-ELF2UF2Build-Debug-30bbb5457eca6514d4ae.json",
 					"name" : "ELF2UF2Build",
 					"projectIndex" : 0
 				},
@@ -1177,7 +1177,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "msa::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-msa-Debug-28a355e258429e2c2298.json",
+					"jsonFile" : "target-msa-Debug-1899b17082e6ae71f6db.json",
 					"name" : "msa",
 					"projectIndex" : 0
 				}
