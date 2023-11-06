@@ -71,4 +71,9 @@ CMakeFiles/msa.dir/msa.c.obj: \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/watchdog.h \
  /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/clocks.h \
- /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/clocks.h
+ /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/clocks.h \
+ /home/pacmat/pico/mtb_suspension_analyzer/raspberry26x32.h \
+ /home/pacmat/pico/mtb_suspension_analyzer/ssd1306_font.h \
+ /usr/include/newlib/string.h /usr/include/newlib/sys/_locale.h \
+ /usr/include/newlib/strings.h /usr/include/newlib/sys/string.h \
+ /usr/include/newlib/ctype.h

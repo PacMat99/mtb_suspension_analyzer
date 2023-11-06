@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "../${env:PICO_SDK_PATH}/**"
+                "../${env:PICO_SDK_PATH}/**",
+                "/home/pacmat/pico/pico-sdk/src/common/pico_stdlib/include/pico"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
