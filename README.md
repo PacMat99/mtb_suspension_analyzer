@@ -1,10 +1,10 @@
-# mtb_suspension_analyzer
+# MSA - MTB Suspension Analyzer
 
 ## Description
 
-This is a prototype of a suspension analyzer system.
+This is a prototype of a suspension analyzing system.
 
-The project will be initially developed for a hardtail mtb. A prototype for full suspended mtb will probably be developed in the future with the help of some friends who own a full suspended mtb.
+The project will be initially developed for a hardtail mtb. A prototype for full suspended mtb will probably be developed in the future with the help of some friends who own a full.
 
 The code is mainly written in C. 
 
@@ -23,6 +23,6 @@ Probably one of the next step will be to add a (third) LSM6DSOX sensor in cranks
 
 - 1 x Raspberry Pi Pico
 - 2 x LSM6DSOX
-- 1 x SSD1306 OLED display (0.91", (128x32)px)
+- 1 x SSD1306 OLED display (0.91", 128x32 px)
 - 1 x micro sd storage expansion board
 - 2 x 18650 batteries in series
