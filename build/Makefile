@@ -207,6 +207,19 @@ cyw43_driver_picow_cyw43_bus_pio_spi_pio_h/fast:
 	$(MAKE) $(MAKESILENT) -f pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/cyw43_driver_picow_cyw43_bus_pio_spi_pio_h.dir/build.make pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/cyw43_driver_picow_cyw43_bus_pio_spi_pio_h.dir/build
 .PHONY : cyw43_driver_picow_cyw43_bus_pio_spi_pio_h/fast
 
+#=============================================================================
+# Target rules for targets named ssd1306_display
+
+# Build rule for target.
+ssd1306_display: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ssd1306_display
+.PHONY : ssd1306_display
+
+# fast build rule for target.
+ssd1306_display/fast:
+	$(MAKE) $(MAKESILENT) -f ssd1306_display/CMakeFiles/ssd1306_display.dir/build.make ssd1306_display/CMakeFiles/ssd1306_display.dir/build
+.PHONY : ssd1306_display/fast
+
 home/pacmat/pico/pico-sdk/lib/tinyusb/src/class/audio/audio_device.obj: home/pacmat/pico/pico-sdk/lib/tinyusb/src/class/audio/audio_device.c.obj
 .PHONY : home/pacmat/pico/pico-sdk/lib/tinyusb/src/class/audio/audio_device.obj
 
@@ -1798,6 +1811,7 @@ help:
 	@echo "... cyw43_driver_picow_cyw43_bus_pio_spi_pio_h"
 	@echo "... bs2_default"
 	@echo "... msa"
+	@echo "... ssd1306_display"
 	@echo "... home/pacmat/pico/pico-sdk/lib/tinyusb/src/class/audio/audio_device.obj"
 	@echo "... home/pacmat/pico/pico-sdk/lib/tinyusb/src/class/audio/audio_device.i"
 	@echo "... home/pacmat/pico/pico-sdk/lib/tinyusb/src/class/audio/audio_device.s"

@@ -40,6 +40,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/pacmat/pico/msa/build/pico-sdk/cmake_install.cmake")
+  include("/home/pacmat/pico/msa/build/ssd1306_display/cmake_install.cmake")
 
 endif()
 

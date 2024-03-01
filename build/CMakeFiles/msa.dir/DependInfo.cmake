@@ -124,6 +124,7 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_spi/include"
   "/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/include"
   "/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_pio/include"
+  "../ssd1306_display"
   )
 
 # The set of dependency files which are needed:
@@ -194,6 +195,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/pacmat/pico/msa/build/ssd1306_display/CMakeFiles/ssd1306_display.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

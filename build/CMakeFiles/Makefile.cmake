@@ -15,6 +15,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "elf2uf2/tmp/ELF2UF2Build-cfgcmd.txt.in"
   "pico-sdk/src/rp2_common/pico_cyw43_driver/pioasm/tmp/PioasmBuild-cfgcmd.txt.in"
   "../pico_sdk_import.cmake"
+  "../ssd1306_display/CMakeLists.txt"
   "/home/pacmat/pico/pico-sdk/CMakeLists.txt"
   "/home/pacmat/pico/pico-sdk/cmake/Platform/PICO.cmake"
   "/home/pacmat/pico/pico-sdk/cmake/pico_pre_load_platform.cmake"
@@ -234,6 +235,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "pico-sdk/src/rp2040/hardware_regs/CMakeFiles/CMakeDirectoryInformation.cmake"
   "pico-sdk/src/rp2040/hardware_structs/CMakeFiles/CMakeDirectoryInformation.cmake"
   "pico-sdk/docs/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "ssd1306_display/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -245,4 +247,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "pico-sdk/src/rp2_common/boot_stage2/CMakeFiles/bs2_default_padded_checksummed_asm.dir/DependInfo.cmake"
   "pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/PioasmBuild.dir/DependInfo.cmake"
   "pico-sdk/src/rp2_common/pico_cyw43_driver/CMakeFiles/cyw43_driver_picow_cyw43_bus_pio_spi_pio_h.dir/DependInfo.cmake"
+  "ssd1306_display/CMakeFiles/ssd1306_display.dir/DependInfo.cmake"
   )

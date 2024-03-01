@@ -18,10 +18,18 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.4.0")
   message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.4.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
+add_compile_options(-Wall
+        -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
+        -Wno-unused-function # we have some for the docs that aren't called
+        -Wno-maybe-uninitialized
+        )
+
 project(msa C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
+
+add_subdirectory(ssd1306_display)
 
 # Add executable. Default name is the project name, version 0.1
 
@@ -51,6 +59,7 @@ target_link_libraries(msa
         hardware_timer
         hardware_watchdog
         hardware_clocks
+        ssd1306_display
         )
 
 pico_add_extra_outputs(msa)

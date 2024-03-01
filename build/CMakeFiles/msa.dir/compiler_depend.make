@@ -2967,13 +2967,13 @@ CMakeFiles/msa.dir/msa.c.obj: ../msa.c \
   /usr/include/newlib/sys/sched.h \
   /usr/include/newlib/machine/types.h \
   /usr/include/newlib/sys/stdio.h \
+  /usr/include/newlib/stdlib.h \
+  /usr/include/newlib/machine/stdlib.h \
+  /usr/include/newlib/alloca.h \
   /usr/include/newlib/string.h \
   /usr/include/newlib/sys/_locale.h \
   /usr/include/newlib/strings.h \
   /usr/include/newlib/sys/string.h \
-  /usr/include/newlib/stdlib.h \
-  /usr/include/newlib/machine/stdlib.h \
-  /usr/include/newlib/alloca.h \
   /usr/include/newlib/ctype.h \
   /home/pacmat/pico/pico-sdk/src/common/pico_stdlib/include/pico/stdlib.h \
   /home/pacmat/pico/pico-sdk/src/common/pico_base/include/pico.h \
@@ -3018,9 +3018,6 @@ CMakeFiles/msa.dir/msa.c.obj: ../msa.c \
   /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h \
   /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/spi.h \
   /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/spi.h \
-  /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/include/hardware/i2c.h \
-  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/i2c.h \
-  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/i2c.h \
   /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h \
   /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pio.h \
   /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pio.h \
@@ -3031,8 +3028,14 @@ CMakeFiles/msa.dir/msa.c.obj: ../msa.c \
   /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h \
   /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/clocks.h \
   /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/clocks.h \
-  ../ssd1306_font.h
+  ../ssd1306_display/ssd1306_display.h \
+  /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/include/hardware/i2c.h \
+  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/i2c.h \
+  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/i2c.h \
+  ../ssd1306_display/ssd1306_font.h
 
+
+../ssd1306_display/ssd1306_display.h:
 
 ../msa.c:
 
@@ -3175,6 +3178,8 @@ CMakeFiles/msa.dir/msa.c.obj: ../msa.c \
 /usr/include/newlib/sys/sched.h:
 
 /usr/include/newlib/sys/_pthreadtypes.h:
+
+../ssd1306_display/ssd1306_font.h:
 
 /usr/include/newlib/c++/10.3.1/arm-none-eabi/thumb/v6-m/nofp/bits/c++config.h:
 
@@ -3345,8 +3350,6 @@ generated/pico_base/pico/config_autogen.h:
 /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/addressmap.h:
 
 /home/pacmat/pico/pico-sdk/lib/tinyusb/src/common/tusb_timeout.h:
-
-../ssd1306_font.h:
 
 /home/pacmat/pico/pico-sdk/lib/tinyusb/src/common/tusb_types.h:
 
