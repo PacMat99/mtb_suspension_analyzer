@@ -167,3 +167,6 @@
 /home/pacmat/pico/msa/build/pico-sdk/src/rp2040/hardware_structs/CMakeFiles/rebuild_cache.dir
 /home/pacmat/pico/msa/build/pico-sdk/docs/CMakeFiles/edit_cache.dir
 /home/pacmat/pico/msa/build/pico-sdk/docs/CMakeFiles/rebuild_cache.dir
+/home/pacmat/pico/msa/build/ssd1306_display/CMakeFiles/ssd1306_display.dir
+/home/pacmat/pico/msa/build/ssd1306_display/CMakeFiles/edit_cache.dir
+/home/pacmat/pico/msa/build/ssd1306_display/CMakeFiles/rebuild_cache.dir

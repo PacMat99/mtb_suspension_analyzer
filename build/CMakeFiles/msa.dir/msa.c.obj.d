@@ -15,10 +15,10 @@ CMakeFiles/msa.dir/msa.c.obj: /home/pacmat/pico/msa/msa.c \
  /usr/include/newlib/sys/timespec.h /usr/include/newlib/sys/_timespec.h \
  /usr/include/newlib/sys/_pthreadtypes.h /usr/include/newlib/sys/sched.h \
  /usr/include/newlib/machine/types.h /usr/include/newlib/sys/stdio.h \
- /usr/include/newlib/string.h /usr/include/newlib/sys/_locale.h \
- /usr/include/newlib/strings.h /usr/include/newlib/sys/string.h \
  /usr/include/newlib/stdlib.h /usr/include/newlib/machine/stdlib.h \
- /usr/include/newlib/alloca.h /usr/include/newlib/ctype.h \
+ /usr/include/newlib/alloca.h /usr/include/newlib/string.h \
+ /usr/include/newlib/sys/_locale.h /usr/include/newlib/strings.h \
+ /usr/include/newlib/sys/string.h /usr/include/newlib/ctype.h \
  /home/pacmat/pico/pico-sdk/src/common/pico_stdlib/include/pico/stdlib.h \
  /home/pacmat/pico/pico-sdk/src/common/pico_base/include/pico.h \
  /home/pacmat/pico/pico-sdk/src/common/pico_base/include/pico/types.h \
@@ -62,9 +62,6 @@ CMakeFiles/msa.dir/msa.c.obj: /home/pacmat/pico/msa/msa.c \
  /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/spi.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/spi.h \
- /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/include/hardware/i2c.h \
- /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/i2c.h \
- /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/i2c.h \
  /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pio.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pio.h \
@@ -75,4 +72,8 @@ CMakeFiles/msa.dir/msa.c.obj: /home/pacmat/pico/msa/msa.c \
  /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/clocks.h \
  /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/clocks.h \
- /home/pacmat/pico/msa/ssd1306_font.h
+ /home/pacmat/pico/msa/ssd1306_display/ssd1306_display.h \
+ /home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/include/hardware/i2c.h \
+ /home/pacmat/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/i2c.h \
+ /home/pacmat/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/i2c.h \
+ /home/pacmat/pico/msa/ssd1306_display/ssd1306_font.h

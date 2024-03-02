@@ -13,5 +13,11 @@
     "buildTarget" : {
       "visibility": "hidden"
                },
-     },
+    },
+    "files.associations": {
+        "stdlib.h": "c",
+        "pio.h": "c",
+        "ctype.h": "c",
+        "ssd1306_display.h": "c"
+    },
 }

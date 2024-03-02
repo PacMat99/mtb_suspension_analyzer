@@ -1233,6 +1233,7 @@ msa.elf: CMakeFiles/msa.dir/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_sp
 msa.elf: CMakeFiles/msa.dir/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
 msa.elf: CMakeFiles/msa.dir/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
 msa.elf: CMakeFiles/msa.dir/build.make
+msa.elf: ssd1306_display/libssd1306_display.a
 msa.elf: pico-sdk/src/rp2_common/boot_stage2/bs2_default_padded_checksummed.S
 msa.elf: CMakeFiles/msa.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pacmat/pico/msa/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Linking CXX executable msa.elf"
