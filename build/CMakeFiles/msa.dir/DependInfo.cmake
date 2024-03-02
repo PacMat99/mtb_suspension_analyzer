@@ -58,7 +58,7 @@ set(CMAKE_TARGET_DEFINITIONS_ASM
   "LIB_PICO_UTIL=1"
   "PICO_BOARD=\"pico\""
   "PICO_BUILD=1"
-  "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+  "PICO_CMAKE_BUILD_TYPE=\"Release\""
   "PICO_COPY_TO_RAM=0"
   "PICO_CXX_ENABLE_EXCEPTIONS=0"
   "PICO_NO_FLASH=0"
@@ -124,7 +124,6 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_spi/include"
   "/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_i2c/include"
   "/home/pacmat/pico/pico-sdk/src/rp2_common/hardware_pio/include"
-  "../ssd1306_display"
   )
 
 # The set of dependency files which are needed:

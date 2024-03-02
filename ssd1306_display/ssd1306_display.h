@@ -83,8 +83,6 @@ void DrawLine(uint8_t *buf, int x0, int y0, int x1, int y1, bool on);
 
 int GetFontIndex(uint8_t ch);
 
-uint8_t reversed[sizeof(font)] = {0};
-
 uint8_t reverse(uint8_t b);
 
 void FillReversedCache();

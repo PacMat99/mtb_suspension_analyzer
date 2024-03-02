@@ -33,7 +33,7 @@ add_subdirectory(ssd1306_display)
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(msa msa.c )
+add_executable(msa msa.c)
 
 pico_set_program_name(msa "msa")
 pico_set_program_version(msa "0.1")

@@ -187,7 +187,7 @@ int GetFontIndex(uint8_t ch) {
     else return  0; // Not got that char so space.
 }
 
-//uint8_t reversed[sizeof(font)] = {0};
+uint8_t reversed[sizeof(font)] = {0};
 
 uint8_t reverse(uint8_t b) {
     b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;

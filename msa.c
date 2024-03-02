@@ -96,15 +96,14 @@ restart:
     render(buf, &frame_area);
 
     char *waiting[] = {
-        "WAITING...",
-        "BUT YOU ARE COOL",
-        "ANYWAY! B-)"
+        "WAITING FOR",
+        "A GREAT RIDE"
     };
 
     int i, y;
     for (i = 0, y = 0; i < count_of(waiting); i++) {
         WriteString(buf, 5, y, waiting[i]);
-        y += 10;
+        y += 20;
     }
     render(buf, &frame_area);
 
@@ -116,14 +115,13 @@ restart:
 
     char *recording[] = {
         "RECORDING",
-        "HAPPY RIDE!",
-        ":-D.!=+_"
+        "HAPPY RIDE"
     };
 
     y = 0;
     for (i = 0, y = 0; i < count_of(recording); i++) {
         WriteString(buf, 5, y, recording[i]);
-        y += 10;
+        y += 20;
     }
     render(buf, &frame_area);
 
