@@ -28,6 +28,10 @@
 //#define I2C_SDA 8
 //#define I2C_SCL 9
 
+// Define pins
+#define BUTTON_PIN 18
+#define BUZZER_PIN 19
+
 int64_t alarm_callback(alarm_id_t id, void *user_data) {
     // Put your timeout handler code in here
     return 0;
@@ -60,8 +64,6 @@ int main() {
     // Timer example code - This example fires off the callback after 2000ms
     //add_alarm_in_ms(2000, alarm_callback, NULL, false);
 
-    printf("Hello, SSD1306 OLED display! Look at my raspberries..\n");
-
     // I2C is "open drain", pull ups to keep signal high when no data is being
     // sent
     i2c_init(i2c_default, SSD1306_I2C_CLK * 1000);
@@ -69,6 +71,12 @@ int main() {
     gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
     gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
     gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
+
+    // define gpio pins for button
+    gpio_init(BUTTON_PIN);
+    gpio_set_dir(BUTTON_PIN, GPIO_IN);
+    gpio_init(BUZZER_PIN);
+    gpio_set_dir(BUZZER_PIN, GPIO_OUT);
 
     // run through the complete initialization process
     SSD1306_init();
@@ -85,49 +93,64 @@ int main() {
 
     uint8_t buf[SSD1306_BUF_LEN];
 
-restart:
+    bool run = false;
+    while(1) {
+        bool change_state = gpio_get(BUTTON_PIN);
+        printf("change_state: %s\n", change_state ? "true" : "false");
 
-    //SSD1306_scroll(true);
+        if (change_state) {
+            run = !run;
+            //if (run)
+            //    tone(BUZZER, 500, 500);
+            //else
+            //    tone(BUZZER, 200, 500);
+            sleep_ms(500);
+        }
 
-    sleep_ms(500);
+        if (run)
+            printf("Running\n");
+        else
+            printf("Not running\n");
 
-    // zero the entire display
-    memset(buf, 0, SSD1306_BUF_LEN);
-    render(buf, &frame_area);
+        // zero the entire display
+        memset(buf, 0, SSD1306_BUF_LEN);
+        render(buf, &frame_area);
 
-    char *waiting[] = {
-        "WAITING FOR",
-        "A GREAT RIDE"
-    };
+        //SSD1306_scroll(true);
 
-    int i, y;
-    for (i = 0, y = 0; i < count_of(waiting); i++) {
-        WriteString(buf, 5, y, waiting[i]);
-        y += 20;
+        char *waiting[] = {
+            "WAITING FOR",
+            "A GREAT RIDE"
+        };
+
+        int i, y;
+        for (i = 0, y = 0; i < count_of(waiting); i++) {
+            WriteString(buf, 5, y, waiting[i]);
+            y += 20;
+        }
+        render(buf, &frame_area);
+
+        sleep_ms(5000);
+
+        // zero the entire display
+        memset(buf, 0, SSD1306_BUF_LEN);
+        render(buf, &frame_area);
+
+        char *recording[] = {
+            "RECORDING",
+            "HAPPY RIDE"
+        };
+
+        y = 0;
+        for (i = 0, y = 0; i < count_of(recording); i++) {
+            WriteString(buf, 5, y, recording[i]);
+            y += 20;
+        }
+        render(buf, &frame_area);
+
+        sleep_ms(5000);
+
     }
-    render(buf, &frame_area);
-
-    sleep_ms(5000);
-
-    // zero the entire display
-    memset(buf, 0, SSD1306_BUF_LEN);
-    render(buf, &frame_area);
-
-    char *recording[] = {
-        "RECORDING",
-        "HAPPY RIDE"
-    };
-
-    y = 0;
-    for (i = 0, y = 0; i < count_of(recording); i++) {
-        WriteString(buf, 5, y, recording[i]);
-        y += 20;
-    }
-    render(buf, &frame_area);
-
-    sleep_ms(5000);
-
-    goto restart;
 
     return 0;
 }
