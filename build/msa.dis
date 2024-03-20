@@ -422,7 +422,7 @@ Disassembly of section .text:
 100003d4:	4b37      	ldr	r3, [pc, #220]	; (100004b4 <main+0x160>)
 100003d6:	4d38      	ldr	r5, [pc, #224]	; (100004b8 <main+0x164>)
 100003d8:	4699      	mov	r9, r3
-100003da:	e049      	b.n	10000470 <main+0x11c>
+100003da:	e04a      	b.n	10000472 <main+0x11e>
 100003dc:	4648      	mov	r0, r9
 100003de:	4937      	ldr	r1, [pc, #220]	; (100004bc <main+0x168>)
 100003e0:	f004 faa0 	bl	10004924 <__wrap_printf>
@@ -433,7 +433,7 @@ Disassembly of section .text:
 100003ec:	0040      	lsls	r0, r0, #1
 100003ee:	f000 ff31 	bl	10001254 <sleep_ms>
 100003f2:	2c00      	cmp	r4, #0
-100003f4:	d047      	beq.n	10000486 <main+0x132>
+100003f4:	d048      	beq.n	10000488 <main+0x134>
 100003f6:	4658      	mov	r0, fp
 100003f8:	f004 f9f2 	bl	100047e0 <__wrap_puts>
 100003fc:	2280      	movs	r2, #128	; 0x80
@@ -480,22 +480,22 @@ Disassembly of section .text:
 10000462:	a802      	add	r0, sp, #8
 10000464:	4669      	mov	r1, sp
 10000466:	f006 fe67 	bl	10007138 <render>
-1000046a:	4815      	ldr	r0, [pc, #84]	; (100004c0 <main+0x16c>)
-1000046c:	f000 fef2 	bl	10001254 <sleep_ms>
-10000470:	23d0      	movs	r3, #208	; 0xd0
-10000472:	061b      	lsls	r3, r3, #24
-10000474:	685b      	ldr	r3, [r3, #4]
-10000476:	035b      	lsls	r3, r3, #13
-10000478:	d4b0      	bmi.n	100003dc <main+0x88>
-1000047a:	4648      	mov	r0, r9
-1000047c:	4911      	ldr	r1, [pc, #68]	; (100004c4 <main+0x170>)
-1000047e:	f004 fa51 	bl	10004924 <__wrap_printf>
-10000482:	2c00      	cmp	r4, #0
-10000484:	d1b7      	bne.n	100003f6 <main+0xa2>
-10000486:	4650      	mov	r0, sl
-10000488:	f004 f9aa 	bl	100047e0 <__wrap_puts>
-1000048c:	e7b6      	b.n	100003fc <main+0xa8>
-1000048e:	46c0      	nop			; (mov r8, r8)
+1000046a:	20fa      	movs	r0, #250	; 0xfa
+1000046c:	0040      	lsls	r0, r0, #1
+1000046e:	f000 fef1 	bl	10001254 <sleep_ms>
+10000472:	23d0      	movs	r3, #208	; 0xd0
+10000474:	061b      	lsls	r3, r3, #24
+10000476:	685b      	ldr	r3, [r3, #4]
+10000478:	035b      	lsls	r3, r3, #13
+1000047a:	d4af      	bmi.n	100003dc <main+0x88>
+1000047c:	4648      	mov	r0, r9
+1000047e:	4911      	ldr	r1, [pc, #68]	; (100004c4 <main+0x170>)
+10000480:	f004 fa50 	bl	10004924 <__wrap_printf>
+10000484:	2c00      	cmp	r4, #0
+10000486:	d1b6      	bne.n	100003f6 <main+0xa2>
+10000488:	4650      	mov	r0, sl
+1000048a:	f004 f9a9 	bl	100047e0 <__wrap_puts>
+1000048e:	e7b5      	b.n	100003fc <main+0xa8>
 10000490:	fffffdf4 	.word	0xfffffdf4
 10000494:	00061a80 	.word	0x00061a80
 10000498:	20000f08 	.word	0x20000f08

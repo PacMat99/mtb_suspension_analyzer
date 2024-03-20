@@ -148,7 +148,7 @@ int main() {
         }
         render(buf, &frame_area);
 
-        sleep_ms(5000);
+        sleep_ms(500);
 
     }
 
